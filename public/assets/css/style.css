@@ -1,0 +1,128 @@
+*,
+body,
+html {
+    font-family: "Poppins", sans-serif;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+.navbar {
+    background: #fff;
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.1);
+}
+.navbar .container {
+    display: flex;
+    justify-content: center !important;
+    align-items: center;
+}
+.navbar .container .navbar-brand {
+    margin: 0;
+}
+.main-title {
+    color: #000;
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0;
+    text-transform: uppercase;
+}
+.title {
+    color: #000;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    text-transform: capitalize;
+}
+.subtitle {
+    color: #000;
+    font-size: 20px;
+    font-weight: 400;
+    margin: 0;
+}
+.btn-style {
+    color: #d5d5d5;
+    font-size: 16px;
+    font-weight: 500;
+    background: transparent;
+    border: none;
+}
+.btn-style.active {
+    color: #2bc48a;
+}
+.table-heading {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 20px;
+    font-weight: 600;
+    padding-right: 8rem !important;
+}
+.table-subheading {
+    color: #000;
+    text-align: right;
+    font-size: 20px;
+    font-weight: 600;
+}
+.form-control,
+.form-select {
+    color: #000;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    border-radius: 8px !important;
+    border: 1px solid #d5d5d5 !important;
+    padding: 10px !important;
+}
+.form-control::placeholder,
+.form-select::placeholder {
+    color: #000 !important;
+}
+.form-control:focus,
+.form-select:focus {
+    box-shadow: none !important;
+    border: 1px solid #000 !important;
+}
+.form-btn {
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    padding: 10px 20px !important;
+}
+.form-complete-btn {
+    color: #fff !important;
+    background: #1397df !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    padding: 10px 20px !important;
+}
+.form-complete-btn:focus {
+    box-shadow: none !important;
+}
+
+@media (max-width: 575px) {
+    .main-title {
+        font-size: 20px;
+    }
+    .title,
+    .subtitle,
+    .table-heading,
+    .table-subheading {
+        font-size: 18px;
+    }
+    .table-heading {
+        padding-right: 0.5rem !important;
+    }
+}
+#formResult {
+    color: #fbfbfb;
+    background-color: #2f9fee;
+    height: 25px;
+    padding-top: 10px;
+    padding-bottom: 2rem;
+    text-align: center;
+    width: 28%;
+    margin: 0 0 0 auto;
+    border-radius: 10px;
+}
+
+.hiddenPaymentDiv {
+    display: none;
+}
