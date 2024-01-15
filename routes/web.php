@@ -21,4 +21,5 @@ Route::get('/', function () {
 
 Route::get('/', 'InvoiceController@invoice');
 Route::post('register', 'UserController@register');
+Route::post('payment', 'UserController@payment')->name('payment');
 
