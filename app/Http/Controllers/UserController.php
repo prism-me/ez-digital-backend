@@ -63,7 +63,7 @@ class UserController extends Controller
 
     public function payment(Request $request){
         
-
+        dd($request->all);
         $payment = PaymentService::makePayment($request->all());
         if($payment){
 
