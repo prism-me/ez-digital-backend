@@ -7,7 +7,7 @@ use App\Services\RegisterService;
 namespace App\Http\Controllers;
 use App\Services\ForgetService;
 use App\Models\PasswordReset;
-use App\Services\UserService;
+use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Mail\ForgetMail;
@@ -62,9 +62,8 @@ class UserController extends Controller
     }
 
     public function payment(Request $request){
-        
-        dd($request->all);
         $payment = PaymentService::makePayment($request->all());
+   
         if($payment){
 
             Session::flash('success', 'Payment successful!');

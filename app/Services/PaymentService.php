@@ -8,7 +8,8 @@ class PaymentService {
 
     public function makePayment($data){
 
-        Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+        $stripe = Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
         $customer = Stripe\Customer::create(array(
             "address" => [
                     "line1" => $data['line1'],
@@ -19,13 +20,13 @@ class PaymentService {
             ],
             "email" =>  $data['email'],
             "name" =>  $data['name'],
-            "source" => $request->stripeToken
+            "source" => $data['stripeToken']
         ));
       
         $charge = Stripe\Charge::create ([
                 "amount" => $data['total_amount'] * 100,
                 "currency" => "usd",
-                "customer" => $customer->id,
+                "customer_id" => $customer->id,
                 "description" => $data['description'],
                 "shipping" => [
                     "name" => $data['name'] ,
@@ -62,7 +63,7 @@ class PaymentService {
 
 
     public function stripeTransaction($data,$customer){
-         $transaction = StripeCustomer::create([
+         $transaction = StripeTransaction::create([
                         "user_id" => 1,
                         "customer_id" => $customer['id'],
                         "line1" => $data['line1'],

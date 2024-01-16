@@ -15,6 +15,13 @@ class CreateStripeCustomersTable extends Migration
     {
         Schema::create('stripe_customers', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id');
+            $table->string('country')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->longText('line1')->nullable();
+            $table->string('postal_code')->nullable();
+    
             $table->timestamps();
         });
     }
