@@ -17,8 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 
 
+Route::get('/new-user-signup/{service}/{package}/{plan}', 'InvoiceController@invoice');
 Route::get('/', 'InvoiceController@invoice');
 Route::get('/test', 'UserController@test');
 Route::post('register', 'UserController@register');
 Route::post('payment', 'UserController@payment')->name('payment');
+
+
 
