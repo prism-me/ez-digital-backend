@@ -37,7 +37,10 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('services', 'ServiceController@store')->middleware('auth:sanctum');
     Route::get('services/{route}', 'ServiceController@show');
     Route::delete('services/{route}', 'ServiceController@destroy')->middleware('auth:sanctum');
-    
+
+    Route::get('/create-project', 'ProjectController@create_project')->middleware('auth:sanctum');
+
+
 });
 
 Route::fallback(function () {

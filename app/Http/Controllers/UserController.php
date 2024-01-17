@@ -1,10 +1,10 @@
 <?php
+namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 use App\Services\RegisterService;
-namespace App\Http\Controllers;
 use App\Services\ForgetService;
 use App\Models\PasswordReset;
 use App\Services\PaymentService;
@@ -17,7 +17,6 @@ use Carbon\Carbon;
 use DateTime;
 use Redirect;
 use Validator;
-use Session;
 use Stripe;
 use Hash;
 use Auth;
@@ -63,17 +62,17 @@ class UserController extends Controller
 
     public function payment(Request $request){
         $payment = PaymentService::makePayment($request->all());
-   
+
         if($payment){
 
             Session::flash('success', 'Payment successful!');
             return back();
         }else{
            Session::flash('error', 'Something Went Wrong!');
-            return back(); 
+            return back();
         }
-        
-        
+
+
 
     }
 

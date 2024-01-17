@@ -6,7 +6,7 @@ use Stripe;
 
 class PaymentService {
 
-    public function makePayment($data){
+    public static function makePayment($data){
 
         $stripe = Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
@@ -22,7 +22,7 @@ class PaymentService {
             "name" =>  $data['name'],
             "source" => $data['stripeToken']
         ));
-      
+
         $charge = Stripe\Charge::create ([
                 "amount" => $data['total_amount'] * 100,
                 "currency" => "usd",
@@ -38,7 +38,7 @@ class PaymentService {
                         "country" => $data['country'],
                     ],
                 ]
-        ]); 
+        ]);
 
         $addCustomer = $this->addCustomer($data);
         $addCustomer = $this->stripeTransaction($data,$customer);

@@ -19,7 +19,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/new-user-signup/{service}/{package}/{plan}', 'InvoiceController@invoice');
 Route::get('/', 'InvoiceController@invoice');
 Route::post('register', 'UserController@register');
 Route::post('payment', 'UserController@payment')->name('payment');
+
+
 
