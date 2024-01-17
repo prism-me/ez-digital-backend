@@ -15,11 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Route::get('/', 'InvoiceController@invoice');
+Route::get('/test', 'UserController@test');
 Route::post('register', 'UserController@register');
 Route::post('payment', 'UserController@payment')->name('payment');
 

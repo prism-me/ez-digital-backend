@@ -1,48 +1,19 @@
 <?php
 
 namespace App\Services;
+use App\Models\StripeCustomer;
+use App\Models\StripeTransaction;
 use Stripe;
 
 
 class PaymentService {
 
-    public function makePayment($data){
-
-        $stripe = Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-
-        $customer = Stripe\Customer::create(array(
-            "address" => [
-                    "line1" => $data['line1'],
-                    "postal_code" => $data['postal_code'],
-                    "city" => $data['city'],
-                    "state" => $data['state'],
-                    "country" => $data['country'],
-            ],
-            "email" =>  $data['email'],
-            "name" =>  $data['name'],
-            "source" => $data['stripeToken']
-        ));
+    public function makePayment ($data,$customer){
       
-        $charge = Stripe\Charge::create ([
-                "amount" => $data['total_amount'] * 100,
-                "currency" => "usd",
-                "customer_id" => $customer->id,
-                "description" => $data['description'],
-                "shipping" => [
-                    "name" => $data['name'] ,
-                    "address" => [
-                        "line1" => $data['line1'],
-                        "postal_code" => $data['postal_code'],
-                        "city" => $data['city'],
-                        "state" => $data['state'],
-                        "country" => $data['country'],
-                    ],
-                ]
-        ]); 
-
-        $addCustomer = $this->addCustomer($data);
-        $addCustomer = $this->stripeTransaction($data,$customer);
-        $user = $this->createUser($data);
+        
+        $addCustomer = PaymentService::addCustomer($data);
+        $addCustomer = PaymentService::stripeTransaction($data,$customer);
+        $user = PaymentService::createUser($data);
     }
 
 
@@ -71,7 +42,7 @@ class PaymentService {
                         "city" => $data['city'],
                         "state" => $data['state'],
                         "country" => $data['country'],
-                        "total_amount" => $data['amount'],
+                        "total_amount" => 100,
                         "currency" => "usd",
                         "description" => $data['description'],
                     ]);
@@ -87,8 +58,12 @@ class PaymentService {
             'email' => $request->email,
             'mobile' => $request->mobile,
         ];
-        $create['password'] = bcrypt($data['change_password']);
-        User::create($create);
+        $randomPassword = "new" . Str::random(10) . "user"; 
+        $create['password'] = bcrypt($randomPassword);
+        $user  = User::create($create);
+        SendEmailService::user($data,$randomPassword);
+        
+
 
     }
 

@@ -233,6 +233,17 @@
                               />
                             </div>
                           </div>
+                           <div class="row">
+                            <div class="col">
+                              <input
+                                type="text"
+                                class="form-control mb-3"
+                                placeholder="Description",
+                                name="description"
+                                required
+                              />
+                            </div>
+                          </div>
                       </div>
                     </div>
 
@@ -343,6 +354,7 @@ $(function() {
 
         if (!$form.data('cc-on-file')) {
           e.preventDefault();
+         
           Stripe.setPublishableKey($form.data('stripe-publishable-key'));
           Stripe.createToken({
             number: $('.card-number').val(),

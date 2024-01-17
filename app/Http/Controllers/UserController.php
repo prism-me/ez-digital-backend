@@ -49,6 +49,12 @@ class UserController extends Controller
         }
     }
 
+
+    public function test(){
+        $randomPassword = "new" . Str::random(10) . "user"; 
+        $create['password'] = bcrypt($randomPassword);
+        dd($create);
+    }
     public function register(Request $request){
         $create = [
             'name' => $request->name,
@@ -62,7 +68,54 @@ class UserController extends Controller
     }
 
     public function payment(Request $request){
-        $payment = PaymentService::makePayment($request->all());
+        $stripe = Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+        $customer = Stripe\Customer::create(array(
+            "address" => [
+                    "line1" => $request['line1'],
+                    "postal_code" => $request['postal_code'],
+                    "city" => $request['city'],
+                    "state" => $request['state'],
+                    "country" => $request['country'],
+            ],
+            "email" =>  $request['email'],
+            "name" =>  $request['name'],
+            "source" => $request->input('stripeToken')
+        ));
+       
+        $charge = Stripe\Charge::create ([
+                 "amount" => 100 * 100,
+
+            "currency" => "usd",
+
+            "customer" => $customer->id,
+
+            "description" => "Test payment from itsolutionstuff.com.",
+
+            "shipping" => [
+
+              "name" => "Jenny Rosen",
+
+              "address" => [
+
+                "line1" => "510 Townsend St",
+
+                "postal_code" => "98140",
+
+                "city" => "San Francisco",
+
+                "state" => "CA",
+
+                "country" => "US",
+
+              ],
+
+            ]
+        ]); 
+
+        
+
+        
+        $payment = PaymentService::makePayment($request->all(),$customer);
    
         if($payment){
 

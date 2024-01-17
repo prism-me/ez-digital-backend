@@ -4,7 +4,13 @@ namespace App\Services;
 
 class SendEmailService {
 
-    public function user ($data){
+    public function user ($data,$password){
+
+        $value = [
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => $password
+        ];
 
     }
 }
