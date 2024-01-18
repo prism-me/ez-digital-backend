@@ -38,7 +38,7 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::get('services/{route}', 'ServiceController@show');
     Route::delete('services/{route}', 'ServiceController@destroy')->middleware('auth:sanctum');
 
-    Route::get('/create-project', 'ProjectController@create_project')->middleware('auth:sanctum');
+    Route::post('/create-project', 'ProjectController@create_project')->middleware('auth:sanctum');
 
 
 });

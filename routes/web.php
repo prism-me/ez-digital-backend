@@ -23,5 +23,8 @@ Route::get('/test', 'UserController@test');
 Route::post('register', 'UserController@register');
 Route::post('payment', 'UserController@payment')->name('payment');
 
+Route::get('/test', 'ProjectController@test');
+
+
 
 
