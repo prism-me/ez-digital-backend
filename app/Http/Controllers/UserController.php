@@ -54,6 +54,7 @@ class UserController extends Controller
         $create['password'] = bcrypt($randomPassword);
         dd($create);
     }
+    
     public function register(Request $request){
         $create = [
             'name' => $request->name,
@@ -82,33 +83,20 @@ class UserController extends Controller
         ));
        
         $charge = Stripe\Charge::create ([
-                 "amount" => 100 * 100,
-
-            "currency" => "usd",
-
-            "customer" => $customer->id,
-
-            "description" => "Test payment from itsolutionstuff.com.",
-
-            "shipping" => [
-
-              "name" => "Jenny Rosen",
-
-              "address" => [
-
-                "line1" => "510 Townsend St",
-
-                "postal_code" => "98140",
-
-                "city" => "San Francisco",
-
-                "state" => "CA",
-
-                "country" => "US",
-
-              ],
-
-            ]
+                "amount" => 100 * 100,
+                "currency" => "usd",
+                "customer" => $customer->id,
+                "description" => "Test payment from itsolutionstuff.com.",
+                "shipping" => [
+                                "name" => $request['name'],
+                                "address" => [
+                                    "line1" => $request['line1'],
+                                    "postal_code" => $request['postal_code'],
+                                    "city" => $request['city'],
+                                    "state" => $request['state'],
+                                    "country" => $request['country'],
+                                ],
+                            ]
         ]); 
 
         
@@ -137,6 +125,9 @@ class UserController extends Controller
         if(!auth()->user()->tokens()->delete()) return response()->json('Server Error.', 400);
         return response()->json('You are logged out successfully', 200);
     }
+
+
+   
 
 
 
