@@ -17,14 +17,6 @@ class ProjectController extends Controller
             "url" => $request->web_url,
             "titl" => $request->title
         ];
-        $table->string('web_url');
-        $table->string('cms_url')->nullable();
-        $table->string('cpanel_url')->nullable();
-        $table->string('cms_username')->nullable();
-        $table->string('cms_password')->nullable();
-        $table->string('cpanel_username')->nullable();
-        $table->string('cpanel_password')->nullable();
-        $table->integer('site_id')->nullable();
         $end_point = "sites";
 
         $response = $this->SeRankingApi($data, $end_point);
@@ -48,6 +40,22 @@ class ProjectController extends Controller
             return response()->json([ 'error' => 'Something went wrong!']);
 
         }
+
+        dd($response);
+
+    }
+
+
+    public function test(){
+        $data = [
+            "url" => "https://ez-digital.co",
+            "titl" => "test"
+        ];
+        $data = [];
+        $end_point = "search-engines";
+        // $end_point = "sites";
+
+        $response = $this->SeRankingApi($data, $end_point);
 
         dd($response);
 
