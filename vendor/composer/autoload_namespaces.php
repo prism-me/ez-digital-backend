@@ -8,5 +8,4 @@ $baseDir = dirname($vendorDir);
 return array(
     'Sentry\\Laravel\\' => array($vendorDir . '/sentry/sentry-laravel/src'),
     'PayPal' => array($vendorDir . '/paypal/rest-api-sdk-php/lib'),
-    'Mockery' => array($vendorDir . '/mockery/mockery/library'),
 );
