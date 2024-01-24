@@ -25,6 +25,8 @@ Route::post('payment', 'UserController@payment')->name('payment');
 
 Route::get('/test', 'ProjectController@test');
 
+Route::get('/website-keywords-list', 'SeoController@website_keywords_list');
+
 
 
 

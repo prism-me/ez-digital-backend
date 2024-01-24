@@ -61,12 +61,14 @@ trait SeRankingApiTrait {
 
         $content = curl_exec($curl);
         // curl_close($cURLConnection);
-
-        if(!response){
+// dd($content);
+        if(!$content){
             return 0;
         }else{
             $info = curl_getinfo($curl);
             $result = json_decode($content);
+            return $result;
+
             if (201 == $info["http_code"]) {
             return $result;
         } else {

@@ -13,7 +13,10 @@ class SeoController extends Controller
 
     public function website_keywords_list(Request $request){
 
-        $end_point = "sites/".$request->site_id."/keywords?site_engine_id=".$request->search_engine_id;
+        $site_id = $request->site_id; //"6005651";
+        $search_engine_id = $request->search_engine_id; // "336616";
+
+        $end_point = "sites/".$site_id."/keywords?site_engine_id=".$search_engine_id;
 
         $response = $this->SeRankingApiGet($end_point);
         if($response){
