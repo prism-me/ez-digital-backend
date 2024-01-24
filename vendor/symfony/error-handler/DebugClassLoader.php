@@ -21,7 +21,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Prophecy\ProphecySubjectInterface;
 use ProxyManager\Proxy\ProxyInterface;
 use Symfony\Component\ErrorHandler\Internal\TentativeTypes;
-use Symfony\Component\HttpClient\HttplugClient;
 
 /**
  * Autoloader checking if the class is really defined in the file found.
@@ -57,7 +56,7 @@ class DebugClassLoader
         'null' => 'null',
         'resource' => 'resource',
         'boolean' => 'bool',
-        'true' => 'true',
+        'true' => 'bool',
         'false' => 'false',
         'integer' => 'int',
         'array' => 'array',
@@ -75,7 +74,6 @@ class DebugClassLoader
         '$this' => 'static',
         'list' => 'array',
         'class-string' => 'string',
-        'never' => 'never',
     ];
 
     private const BUILTIN_RETURN_TYPES = [
@@ -93,9 +91,6 @@ class DebugClassLoader
         'parent' => true,
         'mixed' => true,
         'static' => true,
-        'null' => true,
-        'true' => true,
-        'never' => true,
     ];
 
     private const MAGIC_METHODS = [
@@ -415,9 +410,7 @@ class DebugClassLoader
             if (!isset(self::$checkedClasses[$use])) {
                 $this->checkClass($use);
             }
-            if (isset(self::$deprecated[$use]) && strncmp($vendor, str_replace('_', '\\', $use), $vendorLen) && !isset(self::$deprecated[$class])
-                && !(HttplugClient::class === $class && \in_array($use, [\Http\Client\HttpClient::class, \Http\Message\RequestFactory::class, \Http\Message\StreamFactory::class, \Http\Message\UriFactory::class], true))
-            ) {
+            if (isset(self::$deprecated[$use]) && strncmp($vendor, str_replace('_', '\\', $use), $vendorLen) && !isset(self::$deprecated[$class])) {
                 $type = class_exists($class, false) ? 'class' : (interface_exists($class, false) ? 'interface' : 'trait');
                 $verb = class_exists($use, false) || interface_exists($class, false) ? 'extends' : (interface_exists($use, false) ? 'implements' : 'uses');
 
@@ -769,12 +762,6 @@ class DebugClassLoader
             return;
         }
 
-        if ('null' === $types) {
-            self::$returnTypes[$class][$method] = ['null', 'null', $class, $filename];
-
-            return;
-        }
-
         if ($nullable = 0 === strpos($types, 'null|')) {
             $types = substr($types, 5);
         } elseif ($nullable = '|null' === substr($types, -5)) {
@@ -1093,20 +1080,7 @@ EOTXT;
         }
 
         $end = $method->isGenerator() ? $i : $method->getEndLine();
-        $inClosure = false;
-        $braces = 0;
         for (; $i < $end; ++$i) {
-            if (!$inClosure) {
-                $inClosure = str_contains($code[$i], 'function (');
-            }
-
-            if ($inClosure) {
-                $braces += substr_count($code[$i], '{') - substr_count($code[$i], '}');
-                $inClosure = $braces > 0;
-
-                continue;
-            }
-
             if ('void' === $returnType) {
                 $fixedCode[$i] = str_replace('    return null;', '    return;', $code[$i]);
             } elseif ('mixed' === $returnType || '?' === $returnType[0]) {

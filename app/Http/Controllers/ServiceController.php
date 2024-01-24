@@ -50,4 +50,12 @@ class ServiceController extends Controller
         return parent::returnData($service);
        
     }
+
+
+    public function allServices(){
+            $data = Service::with('package')->get();
+            return parent::returnData($data);
+
+
+    }
 }

@@ -15,7 +15,6 @@ trait MockResponsePayloads
     use Mocks\Responses\Orders;
     use Mocks\Responses\PartnerReferrals;
     use Mocks\Responses\PaymentExperienceWebProfiles;
-    use Mocks\Responses\PaymentMethodsTokens;
     use Mocks\Responses\PaymentAuthorizations;
     use Mocks\Responses\PaymentCaptures;
     use Mocks\Responses\PaymentRefunds;

@@ -26,8 +26,10 @@ class PayPal
         $this->httpBodyParam = 'form_params';
 
         $this->options = [];
-
-        $this->setRequestHeader('Accept', 'application/json');
+        $this->options['headers'] = [
+            'Accept'            => 'application/json',
+            'Accept-Language'   => $this->locale,
+        ];
     }
 
     /**

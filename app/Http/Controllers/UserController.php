@@ -86,7 +86,7 @@ class UserController extends Controller
                 "amount" => 100 * 100,
                 "currency" => "usd",
                 "customer" => $customer->id,
-                "description" => "Test payment from itsolutionstuff.com.",
+                "description" => "Test payment from itsolutionstuff.com",
                 "shipping" => [
                                 "name" => $request['name'],
                                 "address" => [
@@ -99,9 +99,6 @@ class UserController extends Controller
                             ]
         ]); 
 
-        
-
-        
         $payment = PaymentService::makePayment($request->all(),$customer);
    
         if($payment){
@@ -127,12 +124,7 @@ class UserController extends Controller
     }
 
 
-   
-
-
-
-
-
+  
 
 
 }

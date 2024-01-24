@@ -57,7 +57,7 @@ class InvoicesTest extends TestCase
         $mockClient->setApiCredentials($this->getMockCredentials());
         $mockClient->getAccessToken();
 
-        $this->assertEquals($expectedResponse, $mockClient->{$expectedMethod}());
+        $this->assertEquals($expectedResponse, $mockClient->{$expectedMethod}(1, 2, true));
     }
 
     /** @test */
@@ -121,17 +121,7 @@ class InvoicesTest extends TestCase
         $mockClient->setApiCredentials($this->getMockCredentials());
         $mockClient->getAccessToken();
 
-        $this->assertEquals($expectedResponse, $mockClient->{$expectedMethod}(
-            'INV2-Z56S-5LLA-Q52L-CPZ5',
-            'Reminder: Payment due for the invoice #ABC-123',
-            'Please pay before the due date to avoid incurring late payment charges which will be adjusted in the next bill generated.',
-            true,
-            true,
-            [
-                'customer-a@example.com',
-                'customer@example.com',
-            ]
-        ));
+        $this->assertEquals($expectedResponse, $mockClient->{$expectedMethod}('INV2-Z56S-5LLA-Q52L-CPZ5', $expectedParams));
     }
 
     /** @test */

@@ -33,7 +33,10 @@ trait PayPalVerifyIPN
         ) {
             \Log::error('Invalid headers or webhook id supplied for paypal webhook');
 
-            return ['error' => 'Invalid headers or webhook id provided'];
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Invalid headers or web hook id provided',
+            ]);
         }
 
         $params = $request->all();

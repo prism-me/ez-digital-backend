@@ -65,7 +65,8 @@ class Batch implements BatchInterface
             $index = $table->getKeyName();
         }
 
-        $driver = $table->getConnection()->getDriverName();
+        $connection = config('database.default');
+        $driver = config("database.connections.{$connection}.driver");
 
         foreach ($values as $key => $val) {
             $ids[] = $val[$index];
@@ -173,7 +174,8 @@ class Batch implements BatchInterface
     {
         $final = [];
         $ids = [];
-        $driver = $table->getConnection()->getDriverName();
+        $connection = config('database.default');
+        $driver = config("database.connections.{$connection}.driver");
 
         if (!count($values)) {
             return false;
@@ -318,7 +320,8 @@ class Batch implements BatchInterface
             }
         }
 
-        $driver = $table->getConnection()->getDriverName();
+        $connection = config('database.default');
+        $driver = config("database.connections.{$connection}.driver");
 
         if (Common::disableBacktick($driver)) {
             foreach ($columns as $key => $column) {

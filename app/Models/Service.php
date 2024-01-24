@@ -18,4 +18,11 @@ class Service extends Model
     {
         return 'route';
     }
+
+    public function package(){
+        
+        return $this->belongsToMany('App\Models\Package')->withPivot('services_packages_detail');
+
+
+    }
 }

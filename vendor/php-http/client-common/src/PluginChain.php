@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Http\Client\Common;
 
+use function array_reverse;
+
 use Http\Client\Common\Exception\LoopException;
 use Http\Promise\Promise;
 use Psr\Http\Message\RequestInterface;
@@ -37,7 +39,7 @@ final class PluginChain
     private function createChain(): callable
     {
         $lastCallable = $this->clientCallable;
-        $reversedPlugins = \array_reverse($this->plugins);
+        $reversedPlugins = array_reverse($this->plugins);
 
         foreach ($reversedPlugins as $plugin) {
             $lastCallable = function (RequestInterface $request) use ($plugin, $lastCallable) {

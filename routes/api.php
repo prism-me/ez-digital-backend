@@ -27,6 +27,7 @@ Route::get('clear-cache', function () {
 });
 
 
+Route::get('all-services', 'ServiceController@allServices');
 Route::group(['prefix' => 'auth'], function ($router) {
 
     #Login

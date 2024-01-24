@@ -36,15 +36,13 @@ class PaymentExperienceWebProfilesTest extends TestCase
         $expectedParams = $this->mockCreateWebProfileParams();
 
         $expectedMethod = 'createWebExperienceProfile';
-        $additionalMethod = 'setRequestHeader';
 
-        $mockClient = $this->mock_client($expectedResponse, $expectedMethod, true, $additionalMethod);
+        $mockClient = $this->mock_client($expectedResponse, $expectedMethod, true);
 
         $mockClient->setApiCredentials($this->getMockCredentials());
         $mockClient->getAccessToken();
-        $mockClient->{$additionalMethod}('PayPal-Request-Id', 'some-request-id');
 
-        $this->assertEquals($expectedResponse, $mockClient->{$expectedMethod}($expectedParams));
+        $this->assertEquals($expectedResponse, $mockClient->{$expectedMethod}($expectedParams, 'some-request-id'));
     }
 
     /** @test */

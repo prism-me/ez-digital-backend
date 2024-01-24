@@ -25,18 +25,20 @@ trait PaymentExperienceWebProfiles
     /**
      * Create a Web Experience Profile.
      *
-     * @param array $data
+     * @param array  $data
+     * @param string $request_id
      *
      * @throws \Throwable
      *
      * @return array|\Psr\Http\Message\StreamInterface|string
      *
-     * @see https://developer.paypal.com/docs/api/payment-experience/v1/#web-profile_create
+     * @see https://developer.paypal.com/docs/api/payment-experience/v1/#web-profiles_get-list
      */
-    public function createWebExperienceProfile(array $data)
+    public function createWebExperienceProfile(array $data, string $request_id)
     {
         $this->apiEndPoint = 'v1/payment-experience/web-profiles';
 
+        $this->options['headers']['PayPal-Request-Id'] = $request_id;
         $this->options['json'] = $data;
 
         $this->verb = 'post';
@@ -53,7 +55,7 @@ trait PaymentExperienceWebProfiles
      *
      * @return array|\Psr\Http\Message\StreamInterface|string
      *
-     * @see https://developer.paypal.com/docs/api/payment-experience/v1/#web-profile_delete
+     * @see https://developer.paypal.com/docs/api/payment-experience/v1/#web-profiles_get-list
      */
     public function deleteWebExperienceProfile(string $profile_id)
     {
@@ -74,7 +76,7 @@ trait PaymentExperienceWebProfiles
      *
      * @return array|\Psr\Http\Message\StreamInterface|string
      *
-     * @see https://developer.paypal.com/docs/api/payment-experience/v1/#web-profile_partial-update
+     * @see https://developer.paypal.com/docs/api/payment-experience/v1/#web-profiles_get-list
      */
     public function patchWebExperienceProfile(string $profile_id, array $data)
     {
@@ -97,7 +99,7 @@ trait PaymentExperienceWebProfiles
      *
      * @return array|\Psr\Http\Message\StreamInterface|string
      *
-     * @see https://developer.paypal.com/docs/api/payment-experience/v1/#web-profile_update
+     * @see https://developer.paypal.com/docs/api/payment-experience/v1/#web-profiles_get-list
      */
     public function updateWebExperienceProfile(string $profile_id, array $data)
     {
@@ -119,7 +121,7 @@ trait PaymentExperienceWebProfiles
      *
      * @return array|\Psr\Http\Message\StreamInterface|string
      *
-     * @see https://developer.paypal.com/docs/api/payment-experience/v1/#web-profile_get
+     * @see https://developer.paypal.com/docs/api/payment-experience/v1/#web-profiles_get-list
      */
     public function showWebExperienceProfileDetails(string $profile_id)
     {

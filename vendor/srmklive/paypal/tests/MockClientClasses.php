@@ -6,7 +6,6 @@ use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Handler\MockHandler as HttpMockHandler;
 use GuzzleHttp\HandlerStack as HttpHandlerStack;
 use GuzzleHttp\Psr7\Response as HttpResponse;
-use GuzzleHttp\Psr7\Stream as HttpStream;
 use GuzzleHttp\Utils;
 use Psr\Http\Message\ResponseInterface;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
@@ -30,13 +29,16 @@ trait MockClientClasses
 
     private function mock_http_request($expectedResponse, $expectedEndpoint, $expectedParams, $expectedMethod = 'post')
     {
-        $set_method_name = ($this->setMethodsFunction() === true) ? 'onlyMethods' : 'setMethods';
+        $set_method_name = 'setMethods';
+        if (function_exists('onlyMethods')) {
+            $set_method_name = 'onlyMethods';
+        }
 
         $mockResponse = $this->getMockBuilder(ResponseInterface::class)
             ->getMock();
         $mockResponse->expects($this->exactly(1))
             ->method('getBody')
-            ->willReturn(new HttpStream(fopen('data://text/plain,'.$expectedResponse, 'r')));
+            ->willReturn($expectedResponse);
 
         $mockHttpClient = $this->getMockBuilder(HttpClient::class)
             ->{$set_method_name}([$expectedMethod])
@@ -49,26 +51,25 @@ trait MockClientClasses
         return $mockHttpClient;
     }
 
-    private function mock_client($expectedResponse, $expectedMethod, $token = false, $additionalMethod = null)
+    private function mock_client($expectedResponse, $expectedMethod, $token = false)
     {
-        $set_method_name = ($this->setMethodsFunction() === true) ? 'onlyMethods' : 'setMethods';
+        $set_method_name = 'setMethods';
+        if (function_exists('onlyMethods')) {
+            $set_method_name = 'onlyMethods';
+        }
 
         $methods = [$expectedMethod, 'setApiCredentials'];
-        $methods[] = ($token) ? 'getAccessToken' : '';
-        $methods[] = isset($additionalMethod) ? $additionalMethod : '';
+        if ($token) {
+            $methods[] = 'getAccessToken';
+        }
 
         $mockClient = $this->getMockBuilder(PayPalClient::class)
-            ->{$set_method_name}(array_filter($methods))
+            ->{$set_method_name}($methods)
             ->getMock();
 
         if ($token) {
             $mockClient->expects($this->exactly(1))
                 ->method('getAccessToken');
-        }
-
-        if (isset($additionalMethod)) {
-            $mockClient->expects($this->any())
-            ->method($additionalMethod);
         }
 
         $mockClient->expects($this->exactly(1))
@@ -113,18 +114,5 @@ trait MockClientClasses
             'locale'         => 'en_US',
             'validate_ssl'   => true,
         ];
-    }
-
-    protected function setMethodsFunction(): bool
-    {
-        $useOnlyMethods = false;
-
-        foreach (['8.1', '8.2', '8.3'] as $php_version) {
-            if (strpos(phpversion(), $php_version) !== false) {
-                $useOnlyMethods = true;
-            }
-        }
-
-        return $useOnlyMethods;
     }
 }

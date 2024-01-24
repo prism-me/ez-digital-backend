@@ -3,8 +3,7 @@
 .env
 composer.lock
 /build
+*docker*
 *-container*
 *.phpunit*
 test.php
-/.venv
-/docs/build

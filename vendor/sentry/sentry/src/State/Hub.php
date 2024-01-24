@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace Sentry\State;
 
 use Sentry\Breadcrumb;
-use Sentry\CheckIn;
-use Sentry\CheckInStatus;
 use Sentry\ClientInterface;
 use Sentry\Event;
 use Sentry\EventHint;
 use Sentry\EventId;
 use Sentry\Integration\IntegrationInterface;
-use Sentry\MonitorConfig;
 use Sentry\Severity;
 use Sentry\Tracing\SamplingContext;
 use Sentry\Tracing\Span;
@@ -174,36 +171,6 @@ final class Hub implements HubInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @param int|float|null $duration
-     */
-    public function captureCheckIn(string $slug, CheckInStatus $status, $duration = null, ?MonitorConfig $monitorConfig = null, ?string $checkInId = null): ?string
-    {
-        $client = $this->getClient();
-
-        if (null === $client) {
-            return null;
-        }
-
-        $options = $client->getOptions();
-        $event = Event::createCheckIn();
-        $checkIn = new CheckIn(
-            $slug,
-            $status,
-            $checkInId,
-            $options->getRelease(),
-            $options->getEnvironment(),
-            $duration,
-            $monitorConfig
-        );
-        $event->setCheckIn($checkIn);
-        $this->captureEvent($event);
-
-        return $checkIn->getId();
-    }
-
-    /**
-     * {@inheritdoc}
      */
     public function addBreadcrumb(Breadcrumb $breadcrumb): bool
     {
@@ -272,7 +239,7 @@ final class Hub implements HubInterface
             } else {
                 $sampleRate = $this->getSampleRate(
                     $samplingContext->getParentSampled(),
-                    $options->getTracesSampleRate() ?? 0
+                    $options->getTracesSampleRate()
                 );
             }
 
@@ -290,7 +257,7 @@ final class Hub implements HubInterface
                 return $transaction;
             }
 
-            $transaction->setSampled($this->sample($sampleRate));
+            $transaction->setSampled(mt_rand(0, mt_getrandmax() - 1) / mt_getrandmax() < $sampleRate);
         }
 
         if (!$transaction->getSampled()) {
@@ -298,15 +265,6 @@ final class Hub implements HubInterface
         }
 
         $transaction->initSpanRecorder();
-
-        $profilesSampleRate = $options->getProfilesSampleRate();
-        if ($this->sample($profilesSampleRate)) {
-            $transaction->initProfiler();
-            $profiler = $transaction->getProfiler();
-            if (null !== $profiler) {
-                $profiler->start();
-            }
-        }
 
         return $transaction;
     }
@@ -364,22 +322,6 @@ final class Hub implements HubInterface
         }
 
         return $fallbackSampleRate;
-    }
-
-    /**
-     * @param mixed $sampleRate
-     */
-    private function sample($sampleRate): bool
-    {
-        if (0.0 === $sampleRate) {
-            return false;
-        }
-
-        if (1.0 === $sampleRate) {
-            return true;
-        }
-
-        return mt_rand(0, mt_getrandmax() - 1) / mt_getrandmax() < $sampleRate;
     }
 
     /**

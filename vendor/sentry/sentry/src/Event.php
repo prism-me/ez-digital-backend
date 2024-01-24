@@ -6,7 +6,6 @@ namespace Sentry;
 
 use Sentry\Context\OsContext;
 use Sentry\Context\RuntimeContext;
-use Sentry\Profiling\Profile;
 use Sentry\Tracing\Span;
 
 /**
@@ -49,11 +48,6 @@ final class Event
      * @var string|null the name of the transaction (or culprit) which caused this exception
      */
     private $transaction;
-
-    /**
-     * @var CheckIn|null The check in data
-     */
-    private $checkIn;
 
     /**
      * @var string|null The name of the server (e.g. the host name)
@@ -173,11 +167,6 @@ final class Event
      */
     private $type;
 
-    /**
-     * @var Profile|null The profile data
-     */
-    private $profile;
-
     private function __construct(?EventId $eventId, EventType $eventType)
     {
         $this->id = $eventId ?? EventId::generate();
@@ -203,11 +192,6 @@ final class Event
     public static function createTransaction(EventId $eventId = null): self
     {
         return new self($eventId, EventType::transaction());
-    }
-
-    public static function createCheckIn(?EventId $eventId = null): self
-    {
-        return new self($eventId, EventType::checkIn());
     }
 
     /**
@@ -330,16 +314,6 @@ final class Event
     public function setTransaction(?string $transaction): void
     {
         $this->transaction = $transaction;
-    }
-
-    public function setCheckIn(?CheckIn $checkIn): void
-    {
-        $this->checkIn = $checkIn;
-    }
-
-    public function getCheckIn(): ?CheckIn
-    {
-        return $this->checkIn;
     }
 
     /**
@@ -469,16 +443,14 @@ final class Event
     }
 
     /**
-     * Sets data to the context by a given name.
+     * Sets the data of the context with the given name.
      *
      * @param string               $name The name that uniquely identifies the context
      * @param array<string, mixed> $data The data of the context
      */
     public function setContext(string $name, array $data): self
     {
-        if (!empty($data)) {
-            $this->contexts[$name] = $data;
-        }
+        $this->contexts[$name] = $data;
 
         return $this;
     }
@@ -774,26 +746,5 @@ final class Event
     public function setSpans(array $spans): void
     {
         $this->spans = $spans;
-    }
-
-    public function setProfile(?Profile $profile): void
-    {
-        $this->profile = $profile;
-    }
-
-    public function getProfile(): ?Profile
-    {
-        return $this->profile;
-    }
-
-    public function getTraceId(): ?string
-    {
-        $traceId = $this->getContexts()['trace']['trace_id'];
-
-        if (\is_string($traceId) && !empty($traceId)) {
-            return $traceId;
-        }
-
-        return null;
     }
 }
