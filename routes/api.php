@@ -38,7 +38,13 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::get('services/{route}', 'ServiceController@show');
     Route::delete('services/{route}', 'ServiceController@destroy')->middleware('auth:sanctum');
 
+    #Project
     Route::post('/create-project', 'ProjectController@create_project')->middleware('auth:sanctum');
+    Route::post('/get-search-engines', 'ProjectController@get_search_engines')->middleware('auth:sanctum');
+    Route::post('/add-search-engine', 'ProjectController@add_search_engine')->middleware('auth:sanctum');
+
+    #SEO
+    Route::post('/website-keywords-list', 'SeoController@website_keywords_list')->middleware('auth:sanctum');
 
 
 });

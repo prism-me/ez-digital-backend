@@ -35,7 +35,40 @@ trait SeRankingApiTrait {
             $info = curl_getinfo($curl);
             $result = json_decode($content);
             if (201 == $info["http_code"]) {
-            return $result->site_id;
+            return $result;
+        } else {
+            return 0;
+            // return "Error".$result->message;
+            }
+        }
+
+    }
+
+
+    public function SeRankingApiGet($end_point) {
+        $url = env("SERANKING_BASE_URL").$end_point;
+
+        $token = env("SERANKING_TOKEN");
+
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            "Authorization: Token ".$token
+        ));
+
+        $content = curl_exec($curl);
+        // curl_close($cURLConnection);
+
+        if(!response){
+            return 0;
+        }else{
+            $info = curl_getinfo($curl);
+            $result = json_decode($content);
+            if (201 == $info["http_code"]) {
+            return $result;
         } else {
             return 0;
             // return "Error".$result->message;
