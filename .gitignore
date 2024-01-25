@@ -4,6 +4,7 @@
 /public/hot
 /public/storage
 /storage/*.key
+/storage
 /vendor
 .env
 .env.backup
@@ -17,9 +18,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-<<<<<<< HEAD
 storage/logs/laravel.log
 storage/debugbar/X1f16b4b0614872d5c6b20ec7ece22a36.json
 storage/debugbar/X5583d3aff583c484af3fd5102d86b0b6.json
-=======
->>>>>>> 7359d58477b574d8c3dfeb9568e179739da21b5d
