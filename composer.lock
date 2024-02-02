@@ -231,7 +231,11 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/inflector/zipball/2930cd5ef353871c821d5c43ed030d39ac8cfe65",
                 "reference": "2930cd5ef353871c821d5c43ed030d39ac8cfe65",
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
                 "shasum": ""
             },
             "require": {
@@ -297,7 +301,11 @@
                 "source": "https://github.com/doctrine/inflector/tree/2.0.6"
 =======
                 "source": "https://github.com/doctrine/inflector/tree/2.0.9"
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
             },
             "funding": [
                 {
@@ -317,7 +325,11 @@
             "time": "2022-10-20T09:10:12+00:00"
 =======
             "time": "2024-01-15T18:05:13+00:00"
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
         },
         {
             "name": "doctrine/instantiator",
@@ -1731,7 +1743,11 @@
                 "illuminate/console": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
                 "illuminate/contracts": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
                 "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
                 "php": "^7.2.5|^8.0",
                 "psy/psysh": "^0.11.1|^0.12.0",
                 "symfony/var-dumper": "^4.3.4|^5.0|^6.0|^7.0"
@@ -1745,7 +1761,11 @@
                 "illuminate/database": "The Illuminate Database package (^6.0|^7.0|^8.0|^9.0)."
 =======
                 "illuminate/database": "The Illuminate Database package (^6.0|^7.0|^8.0|^9.0|^10.0|^11.0)."
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
             },
             "type": "library",
             "extra": {
@@ -1787,7 +1807,11 @@
                 "source": "https://github.com/laravel/tinker/tree/v2.9.0"
             },
             "time": "2024-01-04T16:10:04+00:00"
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
         },
         {
             "name": "league/commonmark",
@@ -2368,7 +2392,11 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/3e7edc41b58d65509baeb0d4a14c8fa41d627130",
                 "reference": "3e7edc41b58d65509baeb0d4a14c8fa41d627130",
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
                 "shasum": ""
             },
             "require": {
@@ -2497,7 +2525,11 @@
             "require": {
                 "nette/utils": "^4.0",
                 "php": "8.1 - 8.3"
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
             },
             "require-dev": {
                 "nette/tester": "^2.4",
@@ -2573,7 +2605,11 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/nette/utils/zipball/d3ad0aa3b9f934602cb3e3902ebccf10be34d218",
                 "reference": "d3ad0aa3b9f934602cb3e3902ebccf10be34d218",
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
                 "shasum": ""
             },
             "require": {
@@ -2677,7 +2713,11 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/4a21235f7e56e713259a6f76bf4b5ea08502b9dc",
                 "reference": "4a21235f7e56e713259a6f76bf4b5ea08502b9dc",
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
                 "shasum": ""
             },
             "require": {
@@ -2728,7 +2768,11 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v5.0.0"
             },
             "time": "2024-01-07T17:17:35+00:00"
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
         },
         {
             "name": "nyholm/psr7",
@@ -3843,7 +3887,11 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3767b2c56ce02d01e3491046f33466a1ae60a37f",
                 "reference": "3767b2c56ce02d01e3491046f33466a1ae60a37f",
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
                 "shasum": ""
             },
             "require": {
@@ -3921,7 +3969,11 @@
                 "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.6"
 =======
                 "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.16"
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
             },
             "funding": [
                 {
@@ -3941,7 +3993,11 @@
             "time": "2023-03-27T11:43:46+00:00"
 =======
             "time": "2024-01-19T07:03:14+00:00"
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
         },
         {
             "name": "platformcommunity/bunnycdn-storage",
@@ -4433,7 +4489,11 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/bobthecow/psysh/zipball/750bf031a48fd07c673dbe3f11f72362ea306d0d",
                 "reference": "750bf031a48fd07c673dbe3f11f72362ea306d0d",
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
                 "shasum": ""
             },
             "require": {
@@ -4469,7 +4529,11 @@
                 "bamarni-bin": {
                     "bin-links": false,
                     "forward-command": false
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
                 }
             },
             "autoload": {
@@ -4509,7 +4573,11 @@
                 "source": "https://github.com/bobthecow/psysh/tree/v0.12.0"
             },
             "time": "2023-12-20T15:28:09+00:00"
+<<<<<<< HEAD
 >>>>>>> 0aa42d4a365f2a9897744c7c165db5e14e164f91
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+>>>>>>> 0e2fae65b0300cd32bd1eeee54356afd03ccdce6
         },
         {
             "name": "ralouphie/getallheaders",

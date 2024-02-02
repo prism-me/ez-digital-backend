@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\URL;
 use App\Services\RegisterService;
 use App\Services\ForgetService;
 use App\Models\PasswordReset;
@@ -32,9 +33,7 @@ class UserController extends Controller
         try{
 
            if (!Auth::attempt(['email'=>$request->email, 'password'=> $request->password ,'user_type' => $request->user_type])) {
-
                 return response()->json([ 'error' => 'Credentials does not match']);
-
             }
 
             $token = auth()->user()->createToken('API_Token')->plainTextToken;
@@ -55,19 +54,14 @@ class UserController extends Controller
         dd($create);
     }
     
-    public function register(Request $request){
-        $create = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'mobile' => $request->mobile,
-        ];
-        $data = session(['user' => $request->all()]);
-        //$value = $request->session()->get('user');
-        return response()->json(['message' => 'Form submitted successfully']);
-
-    }
+   
 
     public function payment(Request $request){
+        
+        $previousUrl = URL::previous();
+        $request = Request::create($previousUrl);
+        $serviceDetail = $request->segments();
+      
         $stripe = Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
         $customer = Stripe\Customer::create(array(
             "address" => [
@@ -83,7 +77,7 @@ class UserController extends Controller
         ));
        
         $charge = Stripe\Charge::create ([
-                "amount" => 100 * 100,
+                "amount" => 100 * $request['amount'],
                 "currency" => "usd",
                 "customer" => $customer->id,
                 "description" => "Test payment from itsolutionstuff.com",
@@ -99,7 +93,7 @@ class UserController extends Controller
                             ]
         ]); 
 
-        $payment = PaymentService::makePayment($request->all(),$customer);
+        $payment = PaymentService::makePayment($request->all(),$customer , $serviceDetail);
    
         if($payment){
 
@@ -122,6 +116,13 @@ class UserController extends Controller
         if(!auth()->user()->tokens()->delete()) return response()->json('Server Error.', 400);
         return response()->json('You are logged out successfully', 200);
     }
+
+
+    public function me()
+    {
+        return auth()->user();
+    }
+
 
 
   

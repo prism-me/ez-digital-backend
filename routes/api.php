@@ -28,10 +28,13 @@ Route::get('clear-cache', function () {
 
 
 Route::get('all-services', 'ServiceController@allServices');
+Route::get('services-price', 'ServiceController@price');
+
 Route::group(['prefix' => 'auth'], function ($router) {
 
     #Login
     Route::post('login', 'UserController@login');
+    Route::get('me', 'UserController@me');
 
     #Todo
     Route::get('services', 'ServiceController@index');

@@ -25,4 +25,11 @@ class Service extends Model
 
 
     }
+
+    public function price(){
+        
+        return $this->hasMany(PackagePrice::class);
+
+
+    }
 }
