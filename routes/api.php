@@ -34,7 +34,7 @@ Route::group(['prefix' => 'auth'], function ($router) {
 
     #Login
     Route::post('login', 'UserController@login');
-    Route::get('me', 'UserController@me');
+    Route::get('me', 'UserController@me')->middleware('auth:sanctum');
 
     #Todo
     Route::get('services', 'ServiceController@index');
