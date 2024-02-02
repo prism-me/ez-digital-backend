@@ -67,7 +67,7 @@ HELP
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $depth = $input->getOption('depth');
         $target = $this->resolveCode($input->getArgument('target'));
@@ -78,19 +78,5 @@ HELP
         }
 
         return 0;
-    }
-
-    /**
-     * @deprecated Use `resolveCode` instead
-     *
-     * @param string $name
-     *
-     * @return mixed
-     */
-    protected function resolveTarget(string $name)
-    {
-        @\trigger_error('`resolveTarget` is deprecated; use `resolveCode` instead.', \E_USER_DEPRECATED);
-
-        return $this->resolveCode($name);
     }
 }

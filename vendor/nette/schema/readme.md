@@ -21,7 +21,11 @@ Installation:
 composer require nette/schema
 ```
 
+<<<<<<< HEAD
 It requires PHP version 7.1 and supports PHP up to 8.2.
+=======
+It requires PHP version 8.1 and supports PHP up to 8.3.
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
 
 
 [Support Me](https://github.com/sponsors/dg)
@@ -347,7 +351,110 @@ $processor->process($schema, ['a', 'b', 'c']);
 // Failed assertion "Even items in array" for item with value array.
 ```
 
+<<<<<<< HEAD
 The method can be called repeatedly to add more assertions.
+=======
+The method can be called repeatedly to add multiple constraints. It can be intermixed with calls to `transform()` and `castTo()`.
+
+
+Transformation: transform()
+---------------------------
+
+Successfully validated data can be modified using a custom function:
+
+```php
+// conversion to uppercase:
+Expect::string()->transform(fn(string $s) => strtoupper($s));
+```
+
+The method can be called repeatedly to add multiple transformations. It can be intermixed with calls to `assert()` and `castTo()`. The operations will be executed in the order in which they are declared:
+
+```php
+Expect::type('string|int')
+	->castTo('string')
+	->assert('ctype_lower', 'All characters must be lowercased')
+	->transform(fn(string $s) => strtoupper($s)); // conversion to uppercase
+```
+
+The `transform()` method can both transform and validate the value simultaneously. This is often simpler and less redundant than chaining `transform()` and `assert()`. For this purpose, the function receives a [Nette\Schema\Context](https://api.nette.org/schema/master/Nette/Schema/Context.html) object with an `addError()` method, which can be used to add information about validation issues:
+
+```php
+Expect::string()
+	->transform(function (string $s, Nette\Schema\Context $context) {
+		if (!ctype_lower($s)) {
+			$context->addError('All characters must be lowercased', 'my.case.error');
+			return null;
+		}
+
+		return strtoupper($s);
+	});
+```
+
+
+Casting: castTo()
+-----------------
+
+Successfully validated data can be cast:
+
+```php
+Expect::scalar()->castTo('string');
+```
+
+In addition to native PHP types, you can also cast to classes. It distinguishes whether it is a simple class without a constructor or a class with a constructor. If the class has no constructor, an instance of it is created and all elements of the structure are written to its properties:
+
+```php
+class Info
+{
+	public bool $processRefund;
+	public int $refundAmount;
+}
+
+Expect::structure([
+	'processRefund' => Expect::bool(),
+	'refundAmount' => Expect::int(),
+])->castTo(Info::class);
+
+// creates '$obj = new Info' and writes to $obj->processRefund and $obj->refundAmount
+```
+
+If the class has a constructor, the elements of the structure are passed as named parameters to the constructor:
+
+```php
+class Info
+{
+	public function __construct(
+		public bool $processRefund,
+		public int $refundAmount,
+	) {
+	}
+}
+
+// creates $obj = new Info(processRefund: ..., refundAmount: ...)
+```
+
+Casting combined with a scalar parameter creates an object and passes the value as the sole parameter to the constructor:
+
+```php
+Expect::string()->castTo(DateTime::class);
+// creates new DateTime(...)
+```
+
+
+Normalization: before()
+-----------------------
+
+Prior to the validation itself, the data can be normalized using the method `before()`. As an example, let's have an element that must be an array of strings (eg `['a', 'b', 'c']`), but receives input in the form of a string `a b c`:
+
+```php
+$explode = fn($v) => explode(' ', $v);
+
+$schema = Expect::arrayOf('string')
+	->before($explode);
+
+$normalized = $processor->process($schema, 'a b c');
+// OK, returns ['a', 'b', 'c']
+```
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
 
 
 Mapping to Objects: from()

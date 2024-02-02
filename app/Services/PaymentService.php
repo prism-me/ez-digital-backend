@@ -11,12 +11,15 @@ use Stripe;
 
 class PaymentService {
 
-    public function makePayment ($data,$customer){
+    public function makePayment ($data,$customer,$serviceDetail){
       
         
         $addCustomer = PaymentService::addCustomer($data);
         $addCustomer = PaymentService::stripeTransaction($data,$customer);
-        $user = PaymentService::createUser($data);
+        $user = PaymentService::createUser($data,$serviceDetail);
+        return $user;
+        $service = PaymentService::getServiceDetail($serviceDetail);
+        return $service;
     }
 
 
@@ -46,12 +49,12 @@ class PaymentService {
                         "description" => $data['description']
                       
                     ]);
-        if (!$customer) throw new  \Exception("Error", 1);
+        if (!$transaction) throw new  \Exception("Error", 1);
         return false;
     }
 
 
-    public function createUser($data){
+    public function createUser($data,$serviceDetail){
 
         $create = [
             'name' => $data['name'],
@@ -61,10 +64,23 @@ class PaymentService {
         $randomPassword = "new" . Str::random(10) . "user"; 
         $create['password'] = bcrypt($randomPassword);
         $user  = User::create($create);
-        SendEmailService::user($data,$randomPassword);
+        SendEmailService::user($data,$randomPassword,$serviceDetail);
         return true;
 
 
+    }
+
+    public function getServiceDetail($serviceDetail){
+        
+        $service = Service::where('route',$serviceDetail[0] )->first();
+        $package = Package::where('route',$serviceDetail[1])->first();
+        $plan = Plan::where('route',$serviceDetail[2])->first();
+        return ServicePackageDetail::where('service_id',$service['id'] )
+                                ->where('package_id' , $package['id'] )
+                                ->where('plan_id' , $plan['id'] )
+                                ->first();
+
+         
     }
 
 

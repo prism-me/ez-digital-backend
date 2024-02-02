@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner;
 
 use function array_slice;
+use function assert;
 use function dirname;
 use function explode;
 use function implode;
@@ -33,6 +34,8 @@ final class Version
 
     /**
      * Returns the current version of PHPUnit.
+     *
+     * @psalm-return non-empty-string
      */
     public static function id(): string
     {
@@ -41,12 +44,21 @@ final class Version
         }
 
         if (self::$version === '') {
+<<<<<<< HEAD
             self::$version = (new VersionId('9.6.6', dirname(__DIR__, 2)))->getVersion();
+=======
+            self::$version = (new VersionId('9.6.16', dirname(__DIR__, 2)))->getVersion();
+
+            assert(!empty(self::$version));
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
         }
 
         return self::$version;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public static function series(): string
     {
         if (strpos(self::id(), '-')) {
@@ -58,6 +70,9 @@ final class Version
         return implode('.', array_slice(explode('.', $version), 0, 2));
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public static function getVersionString(): string
     {
         return 'PHPUnit ' . self::id() . ' by Sebastian Bergmann and contributors.';

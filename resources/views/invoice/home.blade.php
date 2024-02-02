@@ -99,10 +99,10 @@
                         />
                       <div>
                         <h3 class="title mb-2">
-                          Auto Search Engine Optimization
+                          {{ @$data['service']}}
                           <i class="fa-regular fa-pen-to-square fa-sm ms-1"></i>
                         </h3>
-                        <h3 class="subtitle">3 Months - 1000Aed</h3>
+                        <h3 class="subtitle"> {{ @$data['plan']}} -  {{ @$data['sub_total']}}</h3>
                       </div>
                     </div>
                   </div>
@@ -112,15 +112,15 @@
                         <tbody>
                           <tr>
                             <td class="table-heading">Subtotal:</td>
-                            <td class="table-subheading">1000 Aed</td>
+                            <td class="table-subheading"> {{ @$data['sub_total']}}</td>
                           </tr>
                           <tr>
-                            <td class="table-heading">GST (18%):</td>
-                            <td class="table-subheading">400 Aed</td>
+                            <td class="table-heading">GST {{ @$data['gst']}}</td>
+                            <td class="table-subheading">{{ @$data['gst_total']}}</td>
                           </tr>
                           <tr>
                             <td class="table-heading">Total:</td>
-                            <td class="table-subheading">1400 Aed</td>
+                            <td class="table-subheading">{{ @$data['total']}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -233,7 +233,7 @@
                               />
                             </div>
                           </div>
-                           <div class="row">
+                            <div class="row">
                             <div class="col">
                               <input
                                 type="text"
@@ -310,84 +310,88 @@
               </div>
           </div>
           <center>
+            
+            @if(@$data['total'] != null) 
+
+            
                 <div class="row mt-5">
                   <div class="col-xs-12">
-                      <button class="btn btn-primary btn-lg btn-block" type="submit">Pay Now ($100)</button>
+                      <button class="btn btn-primary btn-lg btn-block" type="submit">Pay Now  {{ @$data['total'] }}</button>
                   </div>
                 </div>
+            @endif
           </center>
       </form>
     </div>
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript">
 
-<script type="text/javascript">
+      $(function() {
 
-$(function() {
+          /*------------------------------------------
+          --------------------------------------------
+          Stripe Payment Code
+          --------------------------------------------
+          --------------------------------------------*/
 
-    /*------------------------------------------
-    --------------------------------------------
-    Stripe Payment Code
-    --------------------------------------------
-    --------------------------------------------*/
+          var $form = $(".require-validation");
 
-    var $form = $(".require-validation");
+          $('form.require-validation').bind('submit', function(e) {
+              var $form = $(".require-validation"),
+              inputSelector = ['input[type=email]', 'input[type=password]',
+                              'input[type=text]', 'input[type=file]',
+                              'textarea'].join(', '),
+              $inputs = $form.find('.required').find(inputSelector),
+              $errorMessage = $form.find('div.error'),
+              valid = true;
+              $errorMessage.addClass('hide');
 
-    $('form.require-validation').bind('submit', function(e) {
-        var $form = $(".require-validation"),
-        inputSelector = ['input[type=email]', 'input[type=password]',
-                         'input[type=text]', 'input[type=file]',
-                         'textarea'].join(', '),
-        $inputs = $form.find('.required').find(inputSelector),
-        $errorMessage = $form.find('div.error'),
-        valid = true;
-        $errorMessage.addClass('hide');
+              $('.has-error').removeClass('has-error');
+              $inputs.each(function(i, el) {
+                var $input = $(el);
+                if ($input.val() === '') {
+                  $input.parent().addClass('has-error');
+                  $errorMessage.removeClass('hide');
+                  e.preventDefault();
+                }
+              });
 
-        $('.has-error').removeClass('has-error');
-        $inputs.each(function(i, el) {
-          var $input = $(el);
-          if ($input.val() === '') {
-            $input.parent().addClass('has-error');
-            $errorMessage.removeClass('hide');
-            e.preventDefault();
+              if (!$form.data('cc-on-file')) {
+                e.preventDefault();
+              
+                Stripe.setPublishableKey($form.data('stripe-publishable-key'));
+                Stripe.createToken({
+                  number: $('.card-number').val(),
+                  cvc: $('.card-cvc').val(),
+                  exp_month: $('.card-expiry-month').val(),
+                  exp_year: $('.card-expiry-year').val()
+                }, stripeResponseHandler);
+              }
+
+          });
+
+          /*------------------------------------------
+          --------------------------------------------
+          Stripe Response Handler
+          --------------------------------------------
+          --------------------------------------------*/
+          function stripeResponseHandler(status, response) {
+              if (response.error) {
+                  $('.error')
+                      .removeClass('hide')
+                      .find('.alert')
+                      .text(response.error.message);
+              } else {
+                  /* token contains id, last4, and card type */
+                  var token = response['id'];
+
+                  $form.find('input[type=text]').empty();
+                  $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+                  $form.get(0).submit();
+              }
           }
-        });
 
-        if (!$form.data('cc-on-file')) {
-          e.preventDefault();
-         
-          Stripe.setPublishableKey($form.data('stripe-publishable-key'));
-          Stripe.createToken({
-            number: $('.card-number').val(),
-            cvc: $('.card-cvc').val(),
-            exp_month: $('.card-expiry-month').val(),
-            exp_year: $('.card-expiry-year').val()
-          }, stripeResponseHandler);
-        }
-
-    });
-
-    /*------------------------------------------
-    --------------------------------------------
-    Stripe Response Handler
-    --------------------------------------------
-    --------------------------------------------*/
-    function stripeResponseHandler(status, response) {
-        if (response.error) {
-            $('.error')
-                .removeClass('hide')
-                .find('.alert')
-                .text(response.error.message);
-        } else {
-            /* token contains id, last4, and card type */
-            var token = response['id'];
-
-            $form.find('input[type=text]').empty();
-            $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
-            $form.get(0).submit();
-        }
-    }
-
-});
-</script>
+      });
+    </script>
   </body>
 </html>

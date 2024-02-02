@@ -14,8 +14,6 @@ use Nette;
 
 final class Message
 {
-	use Nette\SmartObject;
-
 	/** variables: {value: mixed, expected: string} */
 	public const TYPE_MISMATCH = 'schema.typeMismatch';
 
@@ -38,19 +36,44 @@ final class Message
 	public const UNEXPECTED_ITEM = 'schema.unexpectedItem';
 
 	/** no variables */
+<<<<<<< HEAD
 	public const DEPRECATED = 'schema.deprecated';
+=======
+	public const Deprecated = 'schema.deprecated';
 
-	/** @var string */
-	public $message;
+	/** @deprecated use Message::TypeMismatch */
+	public const TYPE_MISMATCH = self::TypeMismatch;
 
-	/** @var string */
-	public $code;
+	/** @deprecated use Message::ValueOutOfRange */
+	public const VALUE_OUT_OF_RANGE = self::ValueOutOfRange;
+
+	/** @deprecated use Message::LengthOutOfRange */
+	public const LENGTH_OUT_OF_RANGE = self::LengthOutOfRange;
+
+	/** @deprecated use Message::PatternMismatch */
+	public const PATTERN_MISMATCH = self::PatternMismatch;
+
+	/** @deprecated use Message::FailedAssertion */
+	public const FAILED_ASSERTION = self::FailedAssertion;
+
+	/** @deprecated use Message::MissingItem */
+	public const MISSING_ITEM = self::MissingItem;
+
+	/** @deprecated use Message::UnexpectedItem */
+	public const UNEXPECTED_ITEM = self::UnexpectedItem;
+
+	/** @deprecated use Message::Deprecated */
+	public const DEPRECATED = self::Deprecated;
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
+
+	public string $message;
+	public string $code;
 
 	/** @var string[] */
-	public $path;
+	public array $path;
 
 	/** @var string[] */
-	public $variables;
+	public array $variables;
 
 
 	public function __construct(string $message, string $code, array $path, array $variables = [])
@@ -74,6 +97,6 @@ final class Message
 		return preg_replace_callback('~( ?)%(\w+)%~', function ($m) use ($vars) {
 			[, $space, $key] = $m;
 			return $vars[$key] === null ? '' : $space . $vars[$key];
-		}, $this->message);
+		}, $this->message) ?? throw new Nette\InvalidStateException(preg_last_error_msg());
 	}
 }

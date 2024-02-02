@@ -1091,6 +1091,8 @@ class Configuration
      */
     public function setTabCompletion(bool $useTabCompletion)
     {
+        @\trigger_error('`setTabCompletion` is deprecated; call `setUseTabCompletion` instead.', \E_USER_DEPRECATED);
+
         $this->setUseTabCompletion($useTabCompletion);
     }
 
@@ -1114,6 +1116,8 @@ class Configuration
      */
     public function getTabCompletion(): bool
     {
+        @\trigger_error('`getTabCompletion` is deprecated; call `useTabCompletion` instead.', \E_USER_DEPRECATED);
+
         return $this->useTabCompletion();
     }
 
@@ -1287,6 +1291,8 @@ class Configuration
      */
     public function getTabCompletionMatchers(): array
     {
+        @\trigger_error('`getTabCompletionMatchers` is no longer used.', \E_USER_DEPRECATED);
+
         return [];
     }
 
@@ -1327,6 +1333,8 @@ class Configuration
      */
     public function addTabCompletionMatchers(array $matchers)
     {
+        @\trigger_error('`addTabCompletionMatchers` is deprecated; call `addMatchers` instead.', \E_USER_DEPRECATED);
+
         $this->addMatchers($matchers);
     }
 

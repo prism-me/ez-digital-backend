@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use function array_key_exists;
-use function sprintf;
 use function version_compare;
 
 /**
@@ -47,6 +45,7 @@ final class MigrationBuilder
      */
     public function build(string $fromVersion): array
     {
+<<<<<<< HEAD
         if (!array_key_exists($fromVersion, self::AVAILABLE_MIGRATIONS)) {
             throw new MigrationBuilderException(
                 sprintf(
@@ -56,6 +55,8 @@ final class MigrationBuilder
             );
         }
 
+=======
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
         $stack = [];
 
         foreach (self::AVAILABLE_MIGRATIONS as $version => $migrations) {

@@ -28,6 +28,10 @@ class TimeitCommand extends Command
     const RESULT_MSG = '<info>Command took %.6f seconds to complete.</info>';
     const AVG_RESULT_MSG = '<info>Command took %.6f seconds on average (%.6f median; %.6f total) to complete.</info>';
 
+<<<<<<< HEAD
+=======
+    // All times stored as nanoseconds!
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
     private static $start = null;
     private static $times = [];
 
@@ -40,8 +44,12 @@ class TimeitCommand extends Command
      */
     public function __construct($name = null)
     {
+<<<<<<< HEAD
         $parserFactory = new ParserFactory();
         $this->parser = $parserFactory->createParser();
+=======
+        $this->parser = new CodeArgumentParser();
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
 
         $this->traverser = new NodeTraverser();
         $this->traverser->addVisitor(new TimeitVisitor());
@@ -77,7 +85,7 @@ HELP
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $code = $input->getArgument('code');
         $num = $input->getOption('num') ?: 1;
@@ -119,7 +127,11 @@ HELP
      */
     public static function markStart()
     {
+<<<<<<< HEAD
         self::$start = \microtime(true);
+=======
+        self::$start = \hrtime(true);
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
     }
 
     /**
@@ -138,7 +150,11 @@ HELP
      */
     public static function markEnd($ret = null)
     {
+<<<<<<< HEAD
         self::$times[] = \microtime(true) - self::$start;
+=======
+        self::$times[] = \hrtime(true) - self::$start;
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
         self::$start = null;
 
         return $ret;

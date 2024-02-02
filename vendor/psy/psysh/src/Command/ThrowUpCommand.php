@@ -13,14 +13,16 @@ namespace Psy\Command;
 
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\New_;
+<<<<<<< HEAD
 use PhpParser\Node\Expr\StaticCall;
+=======
+use PhpParser\Node\Expr\Throw_;
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Name\FullyQualified as FullyQualifiedName;
 use PhpParser\Node\Scalar\String_;
-use PhpParser\Node\Stmt\Throw_;
+use PhpParser\Node\Stmt\Expression;
 use PhpParser\PrettyPrinter\Standard as Printer;
-use Psy\Context;
-use Psy\ContextAware;
 use Psy\Exception\ThrowUpException;
 use Psy\Input\CodeArgument;
 use Psy\ParserFactory;
@@ -30,7 +32,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Throw an exception or error out of the Psy Shell.
  */
-class ThrowUpCommand extends Command implements ContextAware
+class ThrowUpCommand extends Command
 {
     private $parser;
     private $printer;
@@ -46,16 +48,6 @@ class ThrowUpCommand extends Command implements ContextAware
         $this->printer = new Printer();
 
         parent::__construct($name);
-    }
-
-    /**
-     * @deprecated throwUp no longer needs to be ContextAware
-     *
-     * @param Context $context
-     */
-    public function setContext(Context $context)
-    {
-        // Do nothing
     }
 
     /**
@@ -89,10 +81,14 @@ HELP
      *
      * @throws \InvalidArgumentException if there is no exception to throw
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $args = $this->prepareArgs($input->getArgument('exception'));
+<<<<<<< HEAD
         $throwStmt = new Throw_(new StaticCall(new FullyQualifiedName(ThrowUpException::class), 'fromThrowable', $args));
+=======
+        $throwStmt = new Expression(new Throw_(new New_(new FullyQualifiedName(ThrowUpException::class), $args)));
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
         $throwCode = $this->printer->prettyPrint([$throwStmt]);
 
         $shell = $this->getApplication();
@@ -129,9 +125,7 @@ HELP
         }
 
         $node = $nodes[0];
-
-        // Make this work for PHP Parser v3.x
-        $expr = isset($node->expr) ? $node->expr : $node;
+        $expr = $node->expr;
 
         $args = [new Arg($expr, false, false, $node->getAttributes())];
 

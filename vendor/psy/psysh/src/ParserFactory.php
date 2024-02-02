@@ -15,25 +15,24 @@ use PhpParser\Parser;
 use PhpParser\ParserFactory as OriginalParserFactory;
 
 /**
- * Parser factory to abstract over PHP parser library versions.
+ * Parser factory to abstract over PHP Parser library versions.
  */
 class ParserFactory
 {
-    const ONLY_PHP5 = 'ONLY_PHP5';
-    const ONLY_PHP7 = 'ONLY_PHP7';
-    const PREFER_PHP5 = 'PREFER_PHP5';
-    const PREFER_PHP7 = 'PREFER_PHP7';
-
     /**
+<<<<<<< HEAD
      * Possible kinds of parsers for the factory, from PHP parser library.
      *
      * @return array
+=======
+     * New parser instance.
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
      */
-    public static function getPossibleKinds(): array
+    public function createParser(): Parser
     {
-        return ['ONLY_PHP5', 'ONLY_PHP7', 'PREFER_PHP5', 'PREFER_PHP7'];
-    }
+        $factory = new OriginalParserFactory();
 
+<<<<<<< HEAD
     /**
      * Default kind (if supported, based on current interpreter's version).
      *
@@ -59,10 +58,12 @@ class ParserFactory
 
         if (!\in_array($kind, static::getPossibleKinds())) {
             throw new \InvalidArgumentException('Unknown parser kind');
+=======
+        if (!\method_exists($factory, 'createForHostVersion')) {
+            return $factory->create(OriginalParserFactory::PREFER_PHP7);
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
         }
 
-        $parser = $originalFactory->create(\constant(OriginalParserFactory::class.'::'.$kind));
-
-        return $parser;
+        return $factory->createForHostVersion();
     }
 }

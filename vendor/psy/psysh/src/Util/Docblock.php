@@ -213,7 +213,11 @@ class Docblock
      *
      * @return array
      */
+<<<<<<< HEAD
     public function tag(string $tag): array
+=======
+    public function tag(string $tag): ?array
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
     {
         return $this->hasTag($tag) ? $this->tags[$tag] : null;
     }

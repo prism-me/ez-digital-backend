@@ -47,7 +47,7 @@ HELP
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $buf = $this->getApplication()->getCodeBuffer();
         if ($input->getOption('clear')) {

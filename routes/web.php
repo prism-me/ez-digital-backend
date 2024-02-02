@@ -17,13 +17,17 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/new-user-signup/{service}/{package}/{plan}', 'InvoiceController@invoice');
-Route::get('/', 'InvoiceController@invoice');
+// Route::get('/new-user-signup/{service}/{package}/{plan}', 'InvoiceController@invoice');
+Route::get('/{service?}/{sub?}/{package?}/{plan?}', 'InvoiceController@invoice');
 Route::get('/string', 'UserController@string');
 Route::post('register', 'UserController@register');
 Route::post('payment', 'UserController@payment')->name('payment');
 
 Route::get('/password', 'UserController@password');
+
+Route::get('/website-keywords-list', 'SeoController@website_keywords_list');
+Route::get('/website-summary-statistics', 'SeoController@website_summary_statistics');
+Route::get('/keyword-statistics', 'SeoController@keyword_statistics');
 
 
 

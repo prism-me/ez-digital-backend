@@ -19,7 +19,11 @@ trait StaticClass
 	 * @return never
 	 * @throws \Error
 	 */
+<<<<<<< HEAD
 	final public function __construct()
+=======
+	private function __construct()
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
 	{
 		throw new \Error('Class ' . static::class . ' is static and cannot be instantiated.');
 	}

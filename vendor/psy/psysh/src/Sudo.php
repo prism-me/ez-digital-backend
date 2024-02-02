@@ -94,8 +94,19 @@ class Sudo
      */
     public static function assignStaticProperty($class, string $property, $value)
     {
+<<<<<<< HEAD
         $prop = static::getProperty(new \ReflectionClass($class), $property);
         $prop->setValue($value);
+=======
+        $prop = self::getProperty(new \ReflectionClass($class), $property);
+        $refl = $prop->getDeclaringClass();
+
+        if (\method_exists($refl, 'setStaticPropertyValue')) {
+            $refl->setStaticPropertyValue($property, $value);
+        } else {
+            $prop->setValue($value);
+        }
+>>>>>>> 88086bab82b35c7fcd6e586383d14a8c912c06fc
 
         return $value;
     }
