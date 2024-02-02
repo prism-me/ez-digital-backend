@@ -25,6 +25,10 @@ Route::post('payment', 'UserController@payment')->name('payment');
 
 Route::get('/password', 'UserController@password');
 
+Route::get('/website-keywords-list', 'SeoController@website_keywords_list');
+Route::get('/website-summary-statistics', 'SeoController@website_summary_statistics');
+Route::get('/keyword-statistics', 'SeoController@keyword_statistics');
+
 
 
 
