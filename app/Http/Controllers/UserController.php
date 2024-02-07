@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use App\Mail\ForgetMail;
 use App\Http\Requests;
 use App\Models\User;
+use App\Models\Project;
 use Carbon\Carbon;
 use DateTime;
 use Redirect;
@@ -37,8 +38,14 @@ class UserController extends Controller
             }
 
             $token = auth()->user()->createToken('API_Token')->plainTextToken;
+            $site_id = 0;
 
-            return response()->json(['success'=> 'Logged in successfully', 'user' =>  auth()->user() , 200])->header('x_auth_token', $token)->header('access-control-expose-headers' , 'x_auth_token');
+            if(Project::where('user_id', Auth::id())->count() > 0){
+                $project = Project::where('user_id', Auth::id())->first();
+                $site_id = $project->site_id;
+            }
+
+            return response()->json(['success'=> 'Logged in successfully', 'user' =>  auth()->user(), 'site_id' => $site_id , 200])->header('x_auth_token', $token)->header('access-control-expose-headers' , 'x_auth_token');
 
         } catch(BadMethodCallException $e){
 
@@ -49,19 +56,29 @@ class UserController extends Controller
 
 
     public function test(){
-        $randomPassword = "new" . Str::random(10) . "user"; 
+        $randomPassword = "new" . Str::random(10) . "user";
         $create['password'] = bcrypt($randomPassword);
         dd($create);
     }
-    
-   
+
+    public function register(Request $request){
+        $create = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'mobile' => $request->mobile,
+        ];
+        $data = session(['user' => $request->all()]);
+        //$value = $request->session()->get('user');
+        return response()->json(['message' => 'Form submitted successfully']);
+
+    }
 
     public function payment(Request $request){
-        
+
         $previousUrl = URL::previous();
         $request = Request::create($previousUrl);
         $serviceDetail = $request->segments();
-      
+
         $stripe = Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
         $customer = Stripe\Customer::create(array(
             "address" => [
@@ -75,7 +92,9 @@ class UserController extends Controller
             "name" =>  $request['name'],
             "source" => $request->input('stripeToken')
         ));
-       
+
+        dd($customer);
+
         $charge = Stripe\Charge::create ([
                 "amount" => 100 * $request['amount'],
                 "currency" => "usd",
@@ -91,9 +110,9 @@ class UserController extends Controller
                                     "country" => $request['country'],
                                 ],
                             ]
-        ]); 
+        ]);
         $payment = (new PaymentService())->makePayment($request->all(),$customer , $serviceDetail);
-   
+
         if($payment){
 
             Session::flash('success', 'Payment successful!');
@@ -124,7 +143,9 @@ class UserController extends Controller
 
 
 
-  
+
+
+
 
 
 }
