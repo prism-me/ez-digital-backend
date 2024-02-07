@@ -92,8 +92,7 @@ class UserController extends Controller
                                 ],
                             ]
         ]); 
-
-        $payment = PaymentService::makePayment($request->all(),$customer , $serviceDetail);
+        $payment = (new PaymentService())->makePayment($request->all(),$customer , $serviceDetail);
    
         if($payment){
 
