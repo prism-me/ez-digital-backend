@@ -55,7 +55,7 @@ class SeoController extends Controller
         $search_engine_id = $request->search_engine_id; // "336616";
         $date_from = "2022-01-01";
         $date_to = "2024-01-01";
-        $site_engine_id =  $search_engine_id;
+        $site_engine_id = "336616";
 
         // $end_point = "sites/".$site_id."/positions?date_from=".$date_from."&date_to=".$date_to."&site_engine_id=".$site_engine_id."&with_landing_pages=1&with_serp_features=1
         // ";
@@ -94,6 +94,8 @@ class SeoController extends Controller
     public function add_keyword(Request $request){
         https://api4.seranking.com/sites/{site_id}/keywords
     }
+
+
 
 
 }
