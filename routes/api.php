@@ -43,8 +43,9 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::delete('services/{route}', 'ServiceController@destroy')->middleware('auth:sanctum');
 
     #Project
-    Route::post('/create-project', 'ProjectController@create_project')->middleware('auth:sanctum');
-    Route::post('/get-search-engines', 'ProjectController@get_search_engines')->middleware('auth:sanctum');
+    Route::post('/create-project', 'ProjectController@create_project');
+    Route::post('/get-user-project', 'ProjectController@get_user_project');
+    Route::get('/get-search-engines', 'ProjectController@get_search_engines')->middleware('auth:sanctum');
     Route::post('/add-search-engine', 'ProjectController@add_search_engine')->middleware('auth:sanctum');
 
     #SEO
@@ -55,6 +56,9 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::get('/keyword-overview/{domain}', 'SeoController@keywordOverview')->middleware('auth:sanctum');
     Route::get('/audit', 'SeoController@audit')->middleware('auth:sanctum');
     Route::post('/analyze', 'SeoController@analyze')->middleware('auth:sanctum');
+
+    Route::post('/google-analytics', 'SeoController@google_analytics')->middleware('auth:sanctum');
+
 
 
 });

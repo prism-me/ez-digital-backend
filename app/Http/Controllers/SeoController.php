@@ -55,7 +55,7 @@ class SeoController extends Controller
         $search_engine_id = $request->search_engine_id; // "336616";
         $date_from = "2022-01-01";
         $date_to = "2024-01-01";
-        $site_engine_id =  $search_engine_id;
+        $site_engine_id = "336616";
 
         // $end_point = "sites/".$site_id."/positions?date_from=".$date_from."&date_to=".$date_to."&site_engine_id=".$site_engine_id."&with_landing_pages=1&with_serp_features=1
         // ";
@@ -88,6 +88,21 @@ class SeoController extends Controller
         $end_point    = "research/" . "ae" . "/overview/" . "?domain" . '=' . $domain . "&type=organic" ;
         $response = $this->SeRankingApiGet($end_point);
         return parent::returnData($response, 200);
+    }
+    
+    public function google_analytics(Request $request){
+
+        $site_id = $request->site_id; //"6005651";
+
+        $end_point = "analytics/".$site_id."/google";
+
+        $response = $this->SeRankingApiGet($end_point);
+        if($response){
+            return response()->json(['success' => 'Request successfull','data' => $response], 200);
+        }else{
+            return response()->json([ 'error' => "Something went wrong"], 400);
+
+        }
 
     }
 

@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/{service?}/{sub?}/{package?}/{plan?}', 'InvoiceController@invoice');
 Route::get('/string', 'UserController@string');
 Route::post('register', 'UserController@register');
+Route::get('intent', 'UserController@get_intent')->name('intent');
 Route::post('payment', 'UserController@payment')->name('payment');
 
 Route::get('/password', 'UserController@password');

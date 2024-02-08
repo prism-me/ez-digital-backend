@@ -233,7 +233,7 @@
                               />
                             </div>
                           </div>
-                            <div class="row">
+                            {{-- <div class="row">
                             <div class="col">
                               <input
                                 type="text"
@@ -243,7 +243,7 @@
                                 required
                               />
                             </div>
-                          </div>
+                          </div> --}}
                       </div>
                     </div>
 
@@ -281,7 +281,7 @@
 
                           <div class='col-xs-12 col-md-6 form-group required'>
                               <label class='control-label'>Card Number</label> <input
-                                  autocomplete='off' class='form-control card-number' size='20'
+                                  autocomplete='off' class='form-control card-number' minlength="16" maxlength="16" size='20'
                                   type='text'>
                           </div>
                       </div>
@@ -289,7 +289,7 @@
                       <div class='form-row row'>
                           <div class='col-xs-12 col-md-4 form-group cvc required'>
                               <label class='control-label'>CVC</label> <input autocomplete='off'
-                                  class='form-control card-cvc' placeholder='ex. 311' size='4'
+                                  class='form-control card-cvc' minlength="3" maxlength="3" placeholder='ex. 311' size='4'
                                   type='text'>
                           </div>
                           <div class='col-xs-12 col-md-4 form-group expiration required'>
@@ -310,10 +310,10 @@
               </div>
           </div>
           <center>
-            
-            @if(@$data['total'] != null) 
 
-            
+            @if(@$data['total'] != null)
+
+
                 <div class="row mt-5">
                   <div class="col-xs-12">
                       <button class="btn btn-primary btn-lg btn-block" type="submit">Pay Now  {{ @$data['total'] }}</button>
@@ -358,14 +358,25 @@
 
               if (!$form.data('cc-on-file')) {
                 e.preventDefault();
-              
+
+                // (async () => {
+                // const response = await fetch('/intent');
+                // console.log(response);
+                // const {client_secret: clientSecret} = await response.json();
+                // console.log(clientSecret);
+                // console.log(client_secret);
+                // })();
+
                 Stripe.setPublishableKey($form.data('stripe-publishable-key'));
+                // if($('.card-number').val() != '')
                 Stripe.createToken({
                   number: $('.card-number').val(),
                   cvc: $('.card-cvc').val(),
                   exp_month: $('.card-expiry-month').val(),
                   exp_year: $('.card-expiry-year').val()
                 }, stripeResponseHandler);
+
+
               }
 
           });
