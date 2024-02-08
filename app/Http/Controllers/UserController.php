@@ -61,9 +61,16 @@ class UserController extends Controller
         $previousUrl = URL::previous();
         $request = Request::create($previousUrl);
         $serviceDetail = $request->segments();
-      
-        $stripe = Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-        $customer = Stripe\Customer::create(array(
+
+        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+        // $intent = \Stripe\PaymentIntent::create([
+        //             'amount' => 1099,
+        //             'currency' => 'aed',
+        //         ]);
+                
+            
+        
+        $customer = $stripe->Customer::create(array(
             "address" => [
                     "line1" => $request['line1'],
                     "postal_code" => $request['postal_code'],
@@ -71,10 +78,11 @@ class UserController extends Controller
                     "state" => $request['state'],
                     "country" => $request['country'],
             ],
-            "email" =>  $request['email'],
+        "email" =>  $request['email'],
             "name" =>  $request['name'],
             "source" => $request->input('stripeToken')
         ));
+        return $customer;
        
         $charge = Stripe\Charge::create ([
                 "amount" => 100 * $request['amount'],

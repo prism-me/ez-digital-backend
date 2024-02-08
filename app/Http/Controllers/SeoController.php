@@ -80,13 +80,24 @@ class SeoController extends Controller
 
         $response = $this->SeRankingApiGet($end_point);
         return parent::returnData($response, 200);
-        
+
     }
 
     public function keywordOverview($domain){
       
 
         $end_point    = "research/" . "ae" . "/overview/" . "?domain" . '=' . $domain . "&type=adv";
+        $response = $this->SeRankingApiGet($end_point);
+        return parent::returnData($response, 200);
+
+    }
+
+
+    public function audit(Request $request){
+        
+        $site_id = $request->site_id; //"6005651";
+       
+        $end_point    = "audit/" . $site_id . "/report";
         $response = $this->SeRankingApiGet($end_point);
         return parent::returnData($response, 200);
 

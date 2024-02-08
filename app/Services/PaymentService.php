@@ -14,19 +14,18 @@ class PaymentService {
     public function makePayment ($data,$customer,$serviceDetail){
       
         
-        $addCustomer = PaymentService::addCustomer($data);
-        $addCustomer = PaymentService::stripeTransaction($data,$customer);
         $user = PaymentService::createUser($data,$serviceDetail);
-        return $user;
+        $addCustomer = PaymentService::addCustomer($data,$user);
+        $addCustomer = PaymentService::stripeTransaction($data,$customer);
         $service = PaymentService::getServiceDetail($serviceDetail);
         return $service;
     }
 
 
-    public function addCustomer($data){
+    public function addCustomer($data,$user){
 
         $customer = StripeCustomer::create([
-                        "user_id" => 1,
+                        "user_id" => $user['id'],
                         "line1" => $data['line1'],
                         "postal_code" => $data['postal_code'],
                         "city" => $data['city'],
@@ -39,9 +38,9 @@ class PaymentService {
     }
 
 
-    public function stripeTransaction($data,$customer){
+    public function stripeTransaction($data,$customer,$user){
          $transaction = StripeTransaction::create([
-                        "user_id" => 1,
+                        "user_id" => $user['id'],
                         "customer_id" => $customer['id'],
                         "name" => $data['name'],
                         "amount" => 100 * 100,
@@ -60,12 +59,13 @@ class PaymentService {
             'name' => $data['name'],
             'email' => $data['email'],
             'mobile' => $data['mobile'],
+            'user_type' => 'customer',
         ];
         $randomPassword = "new" . Str::random(10) . "user"; 
         $create['password'] = bcrypt($randomPassword);
         $user  = User::create($create);
         SendEmailService::user($data,$randomPassword,$serviceDetail);
-        return true;
+        return $user;
 
 
     }
@@ -79,6 +79,8 @@ class PaymentService {
                                 ->where('package_id' , $package['id'] )
                                 ->where('plan_id' , $plan['id'] )
                                 ->first();
+
+        
 
          
     }

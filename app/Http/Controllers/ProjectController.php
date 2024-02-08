@@ -73,6 +73,7 @@ class ProjectController extends Controller
 
 
     public function get_search_engines(){
+        
         $data = [
             "url" => "https://ez-digital.co",
             "titl" => "test"
@@ -89,7 +90,5 @@ class ProjectController extends Controller
         }
 
     }
-
-
 
 }
