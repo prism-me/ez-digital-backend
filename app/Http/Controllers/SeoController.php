@@ -77,7 +77,6 @@ class SeoController extends Controller
     public function competitors($domain){
       
         $end_point = "research/" . "ae" . "/competitors/" . "?domain" . '=' .  $domain . "&type=organic" . "&stats=1";
-
         $response = $this->SeRankingApiGet($end_point);
         return parent::returnData($response, 200);
 
@@ -86,7 +85,7 @@ class SeoController extends Controller
     public function keywordOverview($domain){
       
 
-        $end_point    = "research/" . "ae" . "/overview/" . "?domain" . '=' . $domain . "&type=adv";
+        $end_point    = "research/" . "ae" . "/overview/" . "?domain" . '=' . $domain . "&type=organic" ;
         $response = $this->SeRankingApiGet($end_point);
         return parent::returnData($response, 200);
 
@@ -101,6 +100,16 @@ class SeoController extends Controller
         $response = $this->SeRankingApiGet($end_point);
         return parent::returnData($response, 200);
 
+    }
+
+
+    public function analyze(Request $request){
+        $data = [
+            'keywords' => $request->keywords
+        ];
+        $end_point    = "research/" . "ae" . "/analyze-keywords/";
+        $response = $this->SeRankingApi($data,$end_point);
+        return parent::returnData($response, 200);
     }
 
 

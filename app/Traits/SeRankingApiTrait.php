@@ -48,8 +48,8 @@ trait SeRankingApiTrait {
 
 
     public function SeRankingApiGet($end_point) {
-        $url = env("SERANKING_BASE_URL").$end_point;
-
+        $url = env("SERANKING_BASE_URL"). $end_point;
+       
         $token = env("SERANKING_TOKEN");
 
         $curl = curl_init();

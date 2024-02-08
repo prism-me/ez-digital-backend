@@ -54,6 +54,7 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::get('/competitors/{domain}', 'SeoController@competitors')->middleware('auth:sanctum');
     Route::get('/keyword-overview/{domain}', 'SeoController@keywordOverview')->middleware('auth:sanctum');
     Route::get('/audit', 'SeoController@audit')->middleware('auth:sanctum');
+    Route::post('/analyze', 'SeoController@analyze')->middleware('auth:sanctum');
 
 
 });
