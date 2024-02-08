@@ -73,11 +73,25 @@ class UserController extends Controller
 
     }
 
-    public function payment(Request $request){
+    public function get_intent(Request $request){
+        // 'amount' => $request['amount'],
 
-        $previousUrl = URL::previous();
-        $request = Request::create($previousUrl);
-        $serviceDetail = $request->segments();
+        $intent = \Stripe\PaymentIntent::create([
+            'amount' => 200,
+
+            'currency' => 'aed',
+        ]);
+
+        return json_encode(array('client_secret' => $intent->client_secret));
+
+    }
+
+    public function payment(Request $request){
+        $stripeToken = $request->stripeToken;
+        // dd($stripeToken);
+
+
+// dd($request);
 
         $stripe = Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
         $customer = Stripe\Customer::create(array(
@@ -90,27 +104,41 @@ class UserController extends Controller
             ],
             "email" =>  $request['email'],
             "name" =>  $request['name'],
-            "source" => $request->input('stripeToken')
+            "source" => $stripeToken
         ));
+// dd($customer);
+//         $intent = \Stripe\PaymentIntent::create([
+//             'customer' => $customer->id,
+//             'setup_future_usage' => 'off_session',
+//             'amount' => 100 * $request['amount'],
+//             'currency' => 'aed',
+//             // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+//             'automatic_payment_methods' => [
+//               'enabled' => 'true',
+//             ],
+//           ]);
 
-        dd($customer);
+        //   dd($intent);
+
+        // dd($customer);
 
         $charge = Stripe\Charge::create ([
-                "amount" => 100 * $request['amount'],
-                "currency" => "usd",
+                "amount" => 100 * 200,
+                "currency" => "aed",
                 "customer" => $customer->id,
-                "description" => "Test payment from itsolutionstuff.com",
-                "shipping" => [
-                                "name" => $request['name'],
-                                "address" => [
-                                    "line1" => $request['line1'],
-                                    "postal_code" => $request['postal_code'],
-                                    "city" => $request['city'],
-                                    "state" => $request['state'],
-                                    "country" => $request['country'],
-                                ],
-                            ]
+                "description" => "Test payment for ez-digital",
         ]);
+// dd($request->input('stripeToken'));
+    //     $charge = Stripe\Charge::create ([
+    //         "amount" => 100 * $request['amount'],
+    //         "currency" => "aed",
+    //         "description" => "Test payment for ez-digital",
+    //         "source" => $stripeToken
+    // ]);
+        $previousUrl = URL::previous();
+        $request1 = Request::create($previousUrl);
+        $serviceDetail = $request1->segments();
+
         $payment = (new PaymentService())->makePayment($request->all(),$customer , $serviceDetail);
 
         if($payment){
