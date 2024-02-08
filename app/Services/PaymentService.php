@@ -1,22 +1,26 @@
 <?php
 
 namespace App\Services;
-use Illuminate\Support\Str;
-use App\Models\StripeCustomer;
-use App\Models\User;
+use App\Models\ServicePackageDetail;
+use App\Services\SendEmailService;
 use App\Models\StripeTransaction;
+use App\Models\StripeCustomer;
+use App\Models\PackagePrice;
+use Illuminate\Support\Str;
+use App\Models\Service;
+use App\Models\Package;
+use App\Models\User;
+use App\Models\Plan;
 
 use Stripe;
 
 
 class PaymentService {
 
-    public function makePayment ($data,$customer,$serviceDetail){
-      
-        
+    public function makePayment ($data,$customer,$serviceDetail,$total){
         $user = PaymentService::createUser($data,$serviceDetail);
         $addCustomer = PaymentService::addCustomer($data,$user);
-        $addCustomer = PaymentService::stripeTransaction($data,$customer);
+        $addTransaction = PaymentService::stripeTransaction($data,$customer,$user,$total);
         $service = PaymentService::getServiceDetail($serviceDetail);
         return $service;
     }
@@ -38,15 +42,13 @@ class PaymentService {
     }
 
 
-    public function stripeTransaction($data,$customer,$user){
+    public function stripeTransaction($data,$customer,$user,$total){
          $transaction = StripeTransaction::create([
                         "user_id" => $user['id'],
                         "customer_id" => $customer['id'],
                         "name" => $data['name'],
-                        "amount" => 100 * 100,
+                        "amount" => 100 * $total,
                         "currency" => "usd",
-                        "description" => $data['description']
-                      
                     ]);
         if (!$transaction) throw new  \Exception("Error", 1);
         return false;
@@ -64,7 +66,7 @@ class PaymentService {
         $randomPassword = "new" . Str::random(10) . "user"; 
         $create['password'] = bcrypt($randomPassword);
         $user  = User::create($create);
-        SendEmailService::user($data,$randomPassword,$serviceDetail);
+        $email =  (new SendEmailService())->user($data,$randomPassword,$serviceDetail);
         return $user;
 
 
@@ -75,10 +77,11 @@ class PaymentService {
         $service = Service::where('route',$serviceDetail[0] )->first();
         $package = Package::where('route',$serviceDetail[1])->first();
         $plan = Plan::where('route',$serviceDetail[2])->first();
-        return ServicePackageDetail::where('service_id',$service['id'] )
-                                ->where('package_id' , $package['id'] )
-                                ->where('plan_id' , $plan['id'] )
-                                ->first();
+        return PackagePrice::where('service_id',$service['id'] )
+                                    ->where('package_id' , $package['id'] )
+                                    ->where('plan_id' , $plan['id'] )
+                                    ->first();
+                      
 
         
 

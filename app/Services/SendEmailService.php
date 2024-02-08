@@ -2,14 +2,19 @@
 
 namespace App\Services;
 use App\Mail\UserWelcomeMail;
+use App\Mail\TeamManagerMail;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Service;
+use App\Models\Package;
+use App\Models\Plan;
+use App\Models\PackagePrice;
 class SendEmailService {
 
     public function user ($data,$password,$serviceDetail)
     {
 
         
-        if(count($segment) != 3){
+        if(count($serviceDetail) != 3){
                 
             $service = Service::where('route',$serviceDetail[1] )->first();
             $package = Package::where('route',$serviceDetail[2])->first();
@@ -36,14 +41,11 @@ class SendEmailService {
 
         $gst =  5 / 100 * $amount['amount'] ;
         $total = $amount['amount'] + $gst;
-        
-        $data = [
-            
-        ]; 
         $userData = [
             'sub_total' => '$' . $amount['amount'],
             'service' => $service['name'],
             'plan' => $plan['name'],
+            'package' => $package['name'],
             'gst' => '5%',
             'gst_total' => '$' . $gst,
             'total' =>   '$' . $total,
@@ -51,8 +53,25 @@ class SendEmailService {
             'email' => $data['email'],
             'password' => $password
         ];
-        $userMail = $data['email'];
+        if($service == "seo"){
+            $teamManagerEmail = array('tanuja@prism-me.com' , 'salmandevteam@prism-me.com');
+            Mail::to($teamManagerEmail)->send(new TeamManagerMail($userData));
 
+        }elseif($service == "paid-advertising"){
+             $teamManagerEmail = array('tanuja@prism-me.com' , 'salmandevteam@prism-me.com');
+            Mail::to($teamManagerEmail)->send(new TeamManagerMail($userData));
+
+        }elseif($service == "social-media-marketing"){
+
+            $teamManagerEmail = array('tanuja@prism-me.com' , 'salmandevteam@prism-me.com');
+            Mail::to($teamManagerEmail)->send(new TeamManagerMail($userData));
+
+        }else{
+            $teamManagerEmail = array('tanuja@prism-me.com' , 'salmandevteam@prism-me.com');
+            Mail::to($teamManagerEmail)->send(new TeamManagerMail($userData));
+        }
+       
+        $userMail = $data['email'];
         Mail::to($userMail)->send(new UserWelcomeMail($userData));
         return true;
 

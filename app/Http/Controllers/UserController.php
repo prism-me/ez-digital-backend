@@ -10,11 +10,15 @@ use App\Services\ForgetService;
 use App\Models\PasswordReset;
 use App\Services\PaymentService;
 use Illuminate\Http\Request;
+use App\Models\PackagePrice;
 use Illuminate\Support\Str;
+use App\Models\Service;
+use App\Models\Package;
+use App\Models\Plan;
+use App\Models\Project;
 use App\Mail\ForgetMail;
 use App\Http\Requests;
 use App\Models\User;
-use App\Models\Project;
 use Carbon\Carbon;
 use DateTime;
 use Redirect;
@@ -53,47 +57,45 @@ class UserController extends Controller
 
         }
     }
-
-
-    public function test(){
-        $randomPassword = "new" . Str::random(10) . "user";
-        $create['password'] = bcrypt($randomPassword);
-        dd($create);
-    }
-
-    public function register(Request $request){
-        $create = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'mobile' => $request->mobile,
-        ];
-        $data = session(['user' => $request->all()]);
-        //$value = $request->session()->get('user');
-        return response()->json(['message' => 'Form submitted successfully']);
-
-    }
-
-    public function get_intent(Request $request){
-        // 'amount' => $request['amount'],
-
-        $intent = \Stripe\PaymentIntent::create([
-            'amount' => 200,
-
-            'currency' => 'aed',
-        ]);
-
-        return json_encode(array('client_secret' => $intent->client_secret));
-
-    }
+  
 
     public function payment(Request $request){
+       
+        $previousUrl = URL::previous();
+        $instance = Request::create($previousUrl);
+        $serviceDetail = $instance->segments();
+
+        if(count( $serviceDetail) != 3){
+                    
+                $service = Service::where('route',$serviceDetail[1] )->first();
+                $package = Package::where('route',$serviceDetail[2])->first();
+                $plan = Plan::where('route',$serviceDetail[3])->first();
+
+        }else{
+
+            $service = Service::where('route',$serviceDetail[0] )->first();
+            $package = Package::where('route',$serviceDetail[1])->first();
+            $plan = Plan::where('route',$serviceDetail[2])->first();
+
+
+        }
+           
+        $amount =  PackagePrice::where('service_id',$service['id'] )
+                                    ->where('package_id' , $package['id'] )
+                                    ->where('plan_id' , $plan['id'] )
+                                    ->first();
+                      
+
+           
+        $gst =  5 / 100 * $amount['amount'] ;
+        $total = $amount['amount'] + $gst;
+           
+
+
         $stripeToken = $request->stripeToken;
-        // dd($stripeToken);
-
-
-// dd($request);
 
         $stripe = Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+        
         $customer = Stripe\Customer::create(array(
             "address" => [
                     "line1" => $request['line1'],
@@ -102,49 +104,25 @@ class UserController extends Controller
                     "state" => $request['state'],
                     "country" => $request['country'],
             ],
-        "email" =>  $request['email'],
+            "email" =>  $request['email'],
             "name" =>  $request['name'],
             "source" => $stripeToken
         ));
-// dd($customer);
-//         $intent = \Stripe\PaymentIntent::create([
-//             'customer' => $customer->id,
-//             'setup_future_usage' => 'off_session',
-//             'amount' => 100 * $request['amount'],
-//             'currency' => 'aed',
-//             // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
-//             'automatic_payment_methods' => [
-//               'enabled' => 'true',
-//             ],
-//           ]);
 
-        //   dd($intent);
-
-        // dd($customer);
 
         $charge = Stripe\Charge::create ([
-                "amount" => 100 * 200,
+                "amount" => 100 * $total,
                 "currency" => "aed",
                 "customer" => $customer->id,
                 "description" => "Test payment for ez-digital",
         ]);
-// dd($request->input('stripeToken'));
-    //     $charge = Stripe\Charge::create ([
-    //         "amount" => 100 * $request['amount'],
-    //         "currency" => "aed",
-    //         "description" => "Test payment for ez-digital",
-    //         "source" => $stripeToken
-    // ]);
-        $previousUrl = URL::previous();
-        $request1 = Request::create($previousUrl);
-        $serviceDetail = $request1->segments();
 
-        $payment = (new PaymentService())->makePayment($request->all(),$customer , $serviceDetail);
+      
+        $payment = (new PaymentService())->makePayment($request->all(),$customer , $serviceDetail,$total);
 
         if($payment){
 
-            Session::flash('success', 'Payment successful!');
-            return back();
+            return view('invoice.thankyou');
         }else{
            Session::flash('error', 'Something Went Wrong!');
             return back();

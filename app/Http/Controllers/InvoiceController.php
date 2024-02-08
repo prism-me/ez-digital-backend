@@ -10,7 +10,7 @@ use App\Models\PackagePrice;
 class InvoiceController extends Controller
 {
     public function invoice($service= null , $sub = null, $package = null , $amount = null){
-        
+     
         $segment  = request()->segments();
         if( $segment == [] ){
            
@@ -44,7 +44,7 @@ class InvoiceController extends Controller
                    
                }              
                 
-                $amount =  PackagePrice::where('service_id',$service['id'] )
+            $amount =  PackagePrice::where('service_id',$service['id'] )
                                     ->where('package_id' , $package['id'] )
                                     ->where('plan_id' , $plan['id'] )
                                     ->first();

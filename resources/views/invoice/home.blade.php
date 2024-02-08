@@ -115,7 +115,7 @@
                             <td class="table-subheading"> {{ @$data['sub_total']}}</td>
                           </tr>
                           <tr>
-                            <td class="table-heading">GST {{ @$data['gst']}}</td>
+                            <td class="table-heading">GST ({{ @$data['gst']}})</td>
                             <td class="table-subheading">{{ @$data['gst_total']}}</td>
                           </tr>
                           <tr>
@@ -271,8 +271,6 @@
                     />
                   </div>
                   <div class="col-md-8 col-sm-12">
-
-
                         <div class='form-row row'>
                           <div class='col-xs-12 col-md-6 form-group required'>
                               <label class='control-label'>Name on Card</label> <input
@@ -359,16 +357,9 @@
               if (!$form.data('cc-on-file')) {
                 e.preventDefault();
 
-                // (async () => {
-                // const response = await fetch('/intent');
-                // console.log(response);
-                // const {client_secret: clientSecret} = await response.json();
-                // console.log(clientSecret);
-                // console.log(client_secret);
-                // })();
 
                 Stripe.setPublishableKey($form.data('stripe-publishable-key'));
-                // if($('.card-number').val() != '')
+               
                 Stripe.createToken({
                   number: $('.card-number').val(),
                   cvc: $('.card-cvc').val(),
