@@ -37,7 +37,7 @@ class UserController extends Controller
 
         try{
 
-           if (!Auth::attempt(['email'=>$request->email, 'password'=> $request->password ,'user_type' => $request->user_type])) {
+           if (!Auth::attempt(['email'=>$request->email, 'password'=> $request->password ])) {
                 return response()->json([ 'error' => 'Credentials does not match']);
             }
 

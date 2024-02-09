@@ -324,14 +324,6 @@
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script type="text/javascript">
 
-      $(function() {
-
-          /*------------------------------------------
-          --------------------------------------------
-          Stripe Payment Code
-          --------------------------------------------
-          --------------------------------------------*/
-
           var $form = $(".require-validation");
 
           $('form.require-validation').bind('submit', function(e) {
