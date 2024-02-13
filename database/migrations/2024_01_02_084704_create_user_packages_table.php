@@ -15,8 +15,10 @@ class CreateUserPackagesTable extends Migration
     {
         Schema::create('user_packages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('package_id');
+            $table->bigInteger('user_id');
+            $table->bigInteger('package_id');
+            $table->bigInteger('plan_id');
+            $table->bigInteger('service_id');
             $table->timestamps();
         });
     }
