@@ -20,6 +20,7 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="https://jqueryvalidation.org/files/demo/site-demos.css">
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -41,6 +42,8 @@
       rel="stylesheet"
     />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
     <title>EZ-Digital Invoice</title>
   </head>
@@ -271,6 +274,8 @@
                     />
                   </div>
                   <div class="col-md-8 col-sm-12">
+
+
                         <div class='form-row row'>
                           <div class='col-xs-12 col-md-6 form-group required'>
                               <label class='control-label'>Name on Card</label> <input
@@ -278,9 +283,9 @@
                           </div>
 
                           <div class='col-xs-12 col-md-6 form-group required'>
-                              <label class='control-label'>Card Number</label> <input
-                                  autocomplete='off' class='form-control card-number' minlength="16" maxlength="16" size='20'
-                                  type='text'>
+                              <label class='control-label'>Card Number</label>
+                              <input autocomplete='off' required class='form-control card-number'
+                               name="cardNumber" id="cardNumber" type='text'>
                           </div>
                       </div>
 
@@ -324,9 +329,36 @@
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script type="text/javascript">
 
+
+$(document).ready(function () {
+
+
+
+});
+
+
+      $(function() {
+
+          /*------------------------------------------
+          --------------------------------------------
+          Stripe Payment Code
+          --------------------------------------------
+          --------------------------------------------*/
+
           var $form = $(".require-validation");
 
           $('form.require-validation').bind('submit', function(e) {
+
+            $('#payment-form').validate({ // initialize the plugin
+                rules: {
+                    cardNumber: {
+                        required: true,
+                        minlength: 16,
+                        maxlength: 16
+                    }
+                }
+            });
+
               var $form = $(".require-validation"),
               inputSelector = ['input[type=email]', 'input[type=password]',
                               'input[type=text]', 'input[type=file]',
@@ -349,9 +381,7 @@
               if (!$form.data('cc-on-file')) {
                 e.preventDefault();
 
-
                 Stripe.setPublishableKey($form.data('stripe-publishable-key'));
-               
                 Stripe.createToken({
                   number: $('.card-number').val(),
                   cvc: $('.card-cvc').val(),

@@ -36,6 +36,11 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('login', 'UserController@login');
     Route::get('me', 'UserController@me')->middleware('auth:sanctum');
 
+
+    // Route::get('dashboard', 'ServiceController@index');
+
+
+
     #Todo
     Route::get('services', 'ServiceController@index');
     Route::post('services', 'ServiceController@store')->middleware('auth:sanctum');
@@ -55,6 +60,8 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::get('/competitors/{domain}', 'SeoController@competitors')->middleware('auth:sanctum');
     Route::get('/keyword-overview/{domain}', 'SeoController@keywordOverview')->middleware('auth:sanctum');
     Route::get('/audit', 'SeoController@audit')->middleware('auth:sanctum');
+    Route::post('/create-audit', 'SeoController@create_audit')->middleware('auth:sanctum');
+    Route::post('/audit-report', 'SeoController@audit_report')->middleware('auth:sanctum');
     Route::post('/analyze', 'SeoController@analyze')->middleware('auth:sanctum');
 
     Route::post('/google-analytics', 'SeoController@google_analytics')->middleware('auth:sanctum');
