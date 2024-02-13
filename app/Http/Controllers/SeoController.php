@@ -75,7 +75,7 @@ class SeoController extends Controller
 
 
     public function competitors($domain){
-      
+
         $end_point = "research/" . "ae" . "/competitors/" . "?domain" . '=' .  $domain . "&type=organic" . "&stats=1";
         $response = $this->SeRankingApiGet($end_point);
         return parent::returnData($response, 200);
@@ -83,13 +83,13 @@ class SeoController extends Controller
     }
 
     public function keywordOverview($domain){
-      
+
 
         $end_point    = "research/" . "ae" . "/overview/" . "?domain" . '=' . $domain . "&type=organic" ;
         $response = $this->SeRankingApiGet($end_point);
         return parent::returnData($response, 200);
     }
-    
+
     public function google_analytics(Request $request){
 
         $site_id = $request->site_id; //"6005651";
@@ -108,10 +108,35 @@ class SeoController extends Controller
 
 
     public function audit(Request $request){
-        
+
         $site_id = $request->site_id; //"6005651";
-       
+
         $end_point    = "audit/" . $site_id . "/report";
+        $response = $this->SeRankingApiGet($end_point);
+        return parent::returnData($response, 200);
+
+    }
+
+
+
+
+
+    public function create_audit(Request $request){
+
+        $data = [
+            'domain' => $request->domain
+        ];
+
+        $end_point    = "audit/create";
+        $response = $this->SeRankingApi($data, $end_point);
+        return parent::returnData($response, 200);
+
+    }
+
+    public function audit_report(Request $request){
+
+
+        $end_point    = "audit/" . $request->report_id . "/report";
         $response = $this->SeRankingApiGet($end_point);
         return parent::returnData($response, 200);
 
