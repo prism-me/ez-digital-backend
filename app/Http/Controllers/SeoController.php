@@ -121,22 +121,51 @@ class SeoController extends Controller
 
 
 
-    public function create_audit(Request $request){
+    public function create_audit($domain){
 
         $data = [
-            'domain' => $request->domain
+            'domain' => $domain
         ];
 
         $end_point    = "audit/create";
         $response = $this->SeRankingApi($data, $end_point);
-        return parent::returnData($response, 200);
+        return $response;
+        // return parent::returnData($response, 200);
 
     }
 
     public function audit_report(Request $request){
 
+        if(Project::where('user_id', $request->user_id)->count() > 0){
+            $project = Project::where('user_id', $request->user_id)->first();
+            if($project->report_id == 0){
+                $parse = parse_url($project->web_url);
+                $domain =  $parse['host'];
+                $response = $this->create_audit($domain);
+                $report_id = $response->id;
+                $project->report_id = $report_id;
+                $project->save();
+            }
 
-        $end_point    = "audit/" . $request->report_id . "/report";
+            $end_point    = "audit/" . $project->report_id . "/report";
+            $response = $this->SeRankingApiGet($end_point);
+            return parent::returnData($response, 200);
+
+            return response()->json(['success' => 'Request successfull','data' => $project], 200);
+        }else{
+            return response()->json([ 'error' => 'Project not found'], 400);
+        }
+
+
+
+
+    }
+
+
+    public function audit_report_recheck(Request $request){
+
+
+        $end_point    = "audit/" . $request->report_id . "/recheck";
         $response = $this->SeRankingApiGet($end_point);
         return parent::returnData($response, 200);
 
