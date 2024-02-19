@@ -35,6 +35,9 @@ Route::group(['prefix' => 'auth'], function ($router) {
     #Login
     Route::post('login', 'UserController@login');
     Route::get('me', 'UserController@me')->middleware('auth:sanctum');
+    Route::post('change-password', 'UserController@changePassword')->middleware('auth:sanctum');
+    Route::post('update-profile', 'UserController@updateProfile')->middleware('auth:sanctum');
+    Route::get('current-plan/{id}', 'UserController@currentPlan')->middleware('auth:sanctum');
 
 
     // Route::get('dashboard', 'ServiceController@index');

@@ -12,7 +12,7 @@ class SeoController extends Controller
     use SeRankingApiTrait;
 
     public function website_keywords_list(Request $request){
-
+       
         $site_id = $request->site_id; //"6005651";
         $search_engine_id = $request->search_engine_id; // "336616";
 
@@ -179,6 +179,11 @@ class SeoController extends Controller
         $end_point    = "research/" . "ae" . "/analyze-keywords/";
         $response = $this->SeRankingApi($data,$end_point);
         return parent::returnData($response, 200);
+    }
+
+
+    public function bestPages(){
+
     }
 
 
